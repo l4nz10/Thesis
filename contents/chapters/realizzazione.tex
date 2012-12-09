@@ -1,37 +1,39 @@
 \section{Programmazione modulare} % (fold)
 \label{sec:programmazione_modulare}
 
-Una volta appreso JavaScript si nota come questo linguaggio di programmazione abbia oltre ali suoi pregi anche alcuni punti deboli.
-Al giorno d'oggi i pezzi di codice JavaScript sono caratterizzati da queste proprietà: 
+Una volta appreso JavaScript si nota come questo linguaggio di programmazione abbia oltre ai suoi pregi anche alcuni punti deboli.
+Nativamente JavaScript non fornisce alcun sistema di modularizzazione, si cerca quindi di rendere modulare il codice attraverso le seguenti tecniche: 
 \begin{itemize}
     \item Il codice viene definito attraverso funzioni le quali sono richiamate immediatamente dopo la loro dichiarazione.
-    \item I riferimenti dalle dipendenze sono fatti attraverso variabili globali le quali vengono caricate in ambiente HTML tramite appositi tag script
+    \item I riferimenti dalle dipendenze sono fatti attraverso variabili globali le quali vengono caricate in ambiente HTML tramite appositi tag script.
     \item Le dipendenze sono dichiarate in modo debole: il programmatore ha bisogno di sapere l'ordine esatto delle dipendenze. Ad esempio, per definire una classe Direzione che si riferisca ad una Fermata, la classe Fermata deve essere definita prima di Direzione
     \item Il caricamento degli script lato client può diventare in certi casi molto lento e deve essere ottimizzato
 \end{itemize}
 
-Tutto ciò può diventare difficoltoso per gestire progetti complessi, in modo particolare quando gli script cominciano ad avere troppe dipendenze, le quali tendono a sovrapporsi e nidificarsi. Inoltre la definizione manuale dei tag script non è scalabile, e non offre la possibilità di caricare gli script su richiesta.
+Tutto ciò può diventare difficoltoso in caso di progetti complessi, in modo particolare quando gli script cominciano ad avere molte dipendenze, le quali tendono a sovrapporsi e nidificarsi. Inoltre la definizione manuale dei tag script non è scalabile, e non offre la possibilità di caricare gli script su richiesta.
 
 \subsubsection{Common.js} % (fold)
 \label{ssub:common_js}
-Per ovviare a questo problema, Common.js (CJS) definisce un formato di modularità che si interfaccia col linguaggio JavaScript odierno, ma non è necessariamente costretto dalle limitazioni degli ambienti JavaScript presenti nei browser. Per assicurare una compatibilità tra l'ambiente di sviluppo e il browser, CJS utilizza un metodo di traduzione dei moduli in un formato intrerpretabile dl browser. Il formato di modularità di CJS permette la presenza di un solo modulo per file, perciò vi è il bisogno di un ``modulo di trasposizione'' per definire più di un modulo in un file, cercando di ottimizzare il codice al massimo.
+Per ovviare a questo problema, Common.js, d'ora in poi CJS, definisce un formato di modularità che si interfaccia col linguaggio JavaScript odierno, ma non è necessariamente costretto dalle limitazioni degli ambienti JavaScript presenti nei browser. Per assicurare una compatibilità tra l'ambiente di sviluppo e il browser, CJS utilizza un metodo di traduzione dei moduli in un formato interpretabile dl browser. Il formato di modularità di CJS permette la presenza di un solo modulo per file, perciò vi è il bisogno di un ``formato di trasposizione'' per accorpare più moduli in un unico file, cercando di ottimizzare il codice al massimo.
 
-In questo modo CJS si è potuta concentrare su come ovviare al problema delle dipendenze circolari, oltre che a creare dei riferimenti alle dipendenze. Tuttavia, non è riuscita a risolvere tutti i problemi, come il caricamento asincrono dei dati. Inoltre le misure di compatibilità prese per i browser pongono un ulteriore problema per gli sviluppatori, in quanto effettuare debugging su un singolo file, mentre lo sviluppo avviene su pià file, risulta difficoltoso.
+In questo modo CJS si è potuta concentrare su come ovviare al problema delle dipendenze circolari, oltre che a creare dei riferimenti alle dipendenze. Tuttavia, non è riuscita a risolvere tutti i problemi, come il caricamento asincrono dei dati. Inoltre le misure di compatibilità imposte dai browser pongono un ulteriore problema per gli sviluppatori; effettuare debugging su un singolo file, mentre lo sviluppo avviene su più file, risulta difficoltoso.
 % subsubsection common_js (end)
 \subsubsection{AMD} % (fold)
 \label{ssub:amd}
-AMD (Asynchronous Module Definition) si occupa di ovviare anche agli ultimi problemi di CJS. L'obiettivo del formato AMD è quello di fornire una soluzione al problema della modularità in JavaScript, per poter essere usata dagli sviluppatori di oggi. AMD è un formato per la definizione di moduli, dove sia moduli che dipendenze possono essere caricate in modo asincrono. AMD si basa sulla pratica di CJS per definire le dipendenze ed i riferimenti ma al contrario di di common.js permette anche la definizione di più moduli in un singolo file, se necessario.
+AMD (Asynchronous Module Definition) si occupa di ovviare anche agli ultimi problemi di CJS. L'obiettivo del formato AMD è quello di fornire una soluzione al problema della modularità in JavaScript, per poter essere usata immediatamente dagli sviluppatori.
+
+AMD è un formato per la definizione di moduli, dove sia moduli che dipendenze possono essere caricate in modo asincrono. AMD si basa sulla pratica di CJS per definire le dipendenze ed i riferimenti ma al contrario di common.js permette anche la definizione di più moduli in un singolo file, se necessario.
 % subsubsection amd (end)
 \newpage
 \subsubsection{Brunch} % (fold)
 \label{ssub:brunch_io}
-Al fine di fare utilizzo di questi formati, si è scelto di utilizzare un application assembler quale {\itshape Brunch}.
+Al fine di utilizzare tali formati, si è scelto di adottare un application assembler quale {\itshape Brunch}.
 
 Brunch, basandosi sui formati AMD e Common.js, offre una struttura modulare, offrendo metodi di riferimento ed esportazione dei moduli. I moduli sono definiti all'interno di un file JavaScript, ed organizzati in cartelle in maniera opportuna. Brunch rimane in osservazione per eventuali modifiche dei file, e per ognuna di esse, compila tutti gli script ed eventuali template in moduli Common.js.
 
-L'applicazione generata con Brunch è definita da un esiguo numero di file statici, i quali possono essere poi trasferiti in qualsiasi altro ambiente. Brunch offre anche un'opzione di {\itshape minify}, che permette una compilazione del codice in maniera ristretta, per garantire un caricamento più rapido lato client.
+L'applicazione generata con Brunch è definita da un esiguo numero di file statici, i quali possono essere poi trasferiti in qualsiasi altro ambiente. Brunch offre anche un'opzione di {\itshape minify}, che permette una ``compilazione'' del codice in maniera ristretta, per garantire un caricamento più rapido lato client.
 
-Brunch è inoltre completamente agnostico a qualsiasi tipo di framework, libreria, linguaggio di programmazione e templating. Permette dunque una programmazione altamente libera garantendo la comodità di non preoccuparsi di definire moduli adeguati ai formati AMD e CJS.
+Brunch è inoltre completamente agnostico a qualsiasi tipo di framework, libreria, linguaggio di programmazione e templating. Permette dunque una buona libera di scelta lasciando però allo sviluppatore la comodità di scrivere codice senza doversi preoccupare di definire moduli adeguati ai formati AMD e CJS.
 
 Al fine di introdurre lo sviluppatore immediatamente alla programmazione minimizzando la fase di setup, Brunch definisce inoltre un set di ``scheletri''. Gli scheletri sono delle impostazioni personalizzabili che forniscono un buon punto di inizio per lo sviluppo di nuove applicazioni. Ogni Scheletro definisce un determinato framework, uno o più linguaggi e librerie.
 % subsubsection brunch_io (end)
@@ -59,7 +61,7 @@ Il funzionamento base di questo servizio si basa su questo elenco di passaggi:
 \end{enumerate}
 \newpage
 
-I requisiti progettuali imposti all'inizio della progettazione richiedono che l'esperienza utente non sia limitata ad uno scorrimento sequenziale di questi punti dal numero 1 all'11, ma possa anche iniziare da punti successivi al primo, attraverso l'inserimento di un url che passi parametri correttamente interpretabili dal server.
+I requisiti progettuali imposti all'inizio della progettazione richiedono che l'esperienza utente non sia limitata ad uno scorrimento sequenziale di questi punti dal numero 1 all'11, ma possa anche iniziare da punti successivi al primo, attraverso l'inserimento di un url che passi parametri correttamente interpretabili dal client.
 
 Dopo aver specificato il caso d'uso relativo al servizio web, si proceda con la definizione delle base del progetto: il modulo Application.
 
@@ -102,7 +104,7 @@ module.exports = Direction;
 
 Innanzitutto vieni importato il modulo Model, il quale mette a disposizione tutte le funzionalità base del modulo Model di Backbone.
 Segue dunque la definizione del modello Direction estendendo con le opportune proprietà/metodi la classe base.
-L'hash \code{defaults} permette di specificare gli attributi di base che ogni modello deve contenere. Quando viene creata un'istanza del mdello, se uno qualsiasi degli attributi contenuti all'interno di \code{defaults} non viene specificato, esso sarà impostato al suo valore di default.
+L'hash \code{defaults} permette di specificare gli attributi di base che ogni modello deve contenere. Quando viene creata un'istanza del modello, se uno qualsiasi degli attributi contenuti all'interno di \code{defaults} non viene specificato, esso sarà impostato al suo valore di default.
 Per il modello Direzione, vengono specificati le proprietà definite come attributi nel diagramma delle classi di progetto realizzato nel capitolo \ref{cha:progettazione}. La proprietà \code{checked} farà riferimento alla casella di selezione specifica all'istanza del proprio modello, e verrà invocato il metodo \code{changeChecked()} ogniqualvolta la casella sarà selezionata o deselezionata.
 
 Una volta definito il modello si definisce la sua esportazione che ne garantisce un riferimento per gli altri moduli.
@@ -113,7 +115,7 @@ Una volta terminata la costruzione della struttura portante dell'applicazione, s
 \subsection{Router} % (fold)
 \label{sub:router}
 
-Il Router è il modulo fondamentale per la realizzazione di un'applicazione web moderna, consentendo, tramite il suo sistema di rotte, una navigazione dei contenuti del sito web senza aver bisogno di ricaricare la pagina nemmeno una volta.
+Il Router è il modulo fondamentale per la realizzazione di un'applicazione web moderna, consentendo, tramite il suo sistema di rotte, una navigazione dei contenuti del sito web senza aver bisogno di ricaricare la pagina.
 Attraverso una strutturazione in sezioni ben definita nelle rotte, il router può comprendere ciò che l'utente sta richiedendo al servizio, ed è capace di richiamare apposite funzioni che si occupano di richiedere al server i dati di cui si ha bisogno e salvarli quindi sul client.
 
 Inoltre attraverso il router è possibile lasciare una traccia nella cronologia di navigazione, consentendo in questo modo all'utente di poter scorrere attraverso i passaggi effettuati all'interno del sito web.
@@ -134,7 +136,7 @@ ApplicationRouter = Router.extend({
         'lines/:lines/directions/:directions' : 'loadDirections',
 
         'lines/:lines/directions/:directions/stations' : 'loadMap'
-    }
+    },
 
     <all functions are listed below>
 });
@@ -144,7 +146,7 @@ module.exports = ApplicationRouter;
 \newpage
 
 Come in ogni definizione di nuovi moduli, ApplicationRouter importa il modulo Router che garantisce le funzionalità base messe a disposizione da Backbone. 
-All'interno di ApplicationRouter viene definita la priprietà \code{route}, il quale conserva al suo interno i riferimenti tra le rotte che il router deve riscontrare e le funzioni che verranno invocate nel caso il riscontro associato ad esse sia positivo.
+All'interno di ApplicationRouter viene definita la proprietà \code{route}, il quale conserva al suo interno i riferimenti tra le rotte che il router deve riscontrare e le funzioni che verranno invocate nel caso il riscontro associato ad esse sia positivo.
 
 La struttura della rotta è stato uno degli aspetti su cui si è posta maggiore attenzione, in quanto uno degli obiettivi prefissati per questo progetto è consentire una navigazione interattiva grazie ad una manipolazione dinamica dell'indirizzo.
 
@@ -156,9 +158,9 @@ La struttura della rotta è stato uno degli aspetti su cui si è posta maggiore 
 Una delle idee su cui poggiano le fondamenta della costruzione di questa applicazione web si basa sulla possibilità di poter costruire un url in modo dinamico, inserendo in esso i vari parametri che il fruitore del servizio ha selezionato tramite l'interfaccia utente.
 Ogniqualvolta l'utente seleziona una linea e/o direzione di preferenza, la composizione dell'indirizzo cambia in tempo reale, in modo tale che alla premuta del tasto di conferma, esso sia già pronto per una corretta lettura da parte del Router.
 
-L'aggiornamento dell'url avviene attraverso l'utilizzo del metodo nativo \code{navigate} del modulo Router. \code{navigate} concede la navigazione verso un indirizzo che deve essere passato come parametro al metodo. Inoltre ad ogni chiamata di \code{navigate} l'indirizzo a cui si vuole navigare viene salvato nella cronologia, se si vuole evitare questo aspetto si può 
+L'aggiornamento dell'url avviene attraverso l'utilizzo del metodo nativo \code{navigate} del modulo Router. \code{navigate} permette la navigazione verso un indirizzo che deve essere passato come parametro al metodo. Inoltre ad ogni chiamata di \code{navigate} l'indirizzo a cui si vuole navigare viene salvato nella cronologia, questo comportamento può essere evitato attraverso il passaggio di appositi parametri.
 
-Durante lo sviluppo di questo progetto è stato scelto di richiamare la funzione \code{navigate} all'interno delle collezioni di oggetti. Ciò dipende dal fatto che le sezioni dell'indirizzo rappresentano una parametrizzazione dei dati scelti dall'utente, ovvero le Linee e Direzioni, e dunque le collezioni possono fornire la giusta composizione del frammento al Router, il quale non dovrà fare altro che navigare alla rotta che gli viene definita (la metodologia di composizione verrà definita nella sezione \ref{sec:collezioni}).
+In questo progetto l'aggiornamento delle rotte viene effettuato dalle collezioni \ref{sec:collezioni}. Esse conoscendo gli elementi selezionati  possono costruire la rotta corrispondente nella maniera opportuna.
 % subsection subsection_name (end)
 \newpage
 
@@ -170,7 +172,7 @@ La struttura dell'indirizzo web concepita per questa applicazione è la seguente
 
 l'indirizzo è suddiviso nella sezione linee, la sezione direzioni ed infine la sezione stazioni. In Backbone, un elemento nella rotta avente i  due punti di prefisso rappresenta un parametro. \code{:lines} e \code{:directions} contengono quindi le linee e le direzioni che l'utente ha scelto di consultare, le quali sono definite attraverso il loro codice identificativo
 
-Lo scopo di questi parametri è duplice: ad esempio, se la sezione dei parametri delle è l'ultima porzione dell'indirizzo (come \code{lines/:lines}), vuol dire che si sta richiedendo l'elenco di tutte le linee, e che quelle presenti nel parametro sono già selezionate. Il router quindi richiederà al server tutti gli oggetti linea e li salverà nella collezione, dopodiché provvederà ad impostare le proprietà \code{checked} degli oggetti linea che corrispono a quelli elencati nel paramentro.
+Lo scopo di questi parametri è duplice: ad esempio, se la sezione dei parametri delle è l'ultima porzione dell'indirizzo (come \code{lines/:lines}), vuol dire che si sta richiedendo l'elenco di tutte le linee, e che quelle presenti nel parametro sono già selezionate. Il router quindi richiederà al server tutti gli oggetti linea e li salverà nella collezione, dopodiché provvederà ad impostare le proprietà \code{checked} degli oggetti linea che corrispondono a quelli elencati nel parametro.
 Se invece al parametro sussegue un'ulteriore porzione di url (come \code{lines/:lines/directions...}), il router comprenderà che si stanno richiedendo degli oggetti Direzione, e per specificare al server di quali direzioni si ha bisogno invierà nella richiesta anche il parametro delle linee.
 
 La composizione dell'indirizzo in sezioni è inoltre utile ai fini dell'utente: dopo aver selezionato per la prima volta le linee e direzioni che si vogliono consultare, l'url rappresenta un link simbolico a quel set di preferenze. Quindi l'utente potrà salvare l'indirizzo e riutilizzarlo per accedere immediatamente alla visualizzazione degli autobus in circolazione, senza dover ripetere il processo di selezione ancora e ancora.
@@ -179,15 +181,17 @@ La composizione dell'indirizzo in sezioni è inoltre utile ai fini dell'utente: 
 
 Tornando al Router, si può notare come le rotte siano definite in tre gruppi distinti: ogni gruppo rappresenta un tipo di sezione che il Router deve saper interpretare ed elaborare. Per ogni gruppo viene chiamata rispettivamente la funzione \code{loadLines}, \code{loadDirections} e \code{loadMap}, dove ognuno è adibito al prelievo delle rispettive risorse. Il nome dell'ultimo metodo non è chiaro: la funzione non si occupa del caricamento della mappa dal server, ma racchiude in se il prelievo degli oggetti fermata e autobus, i quali verranno poi posizionati sulla mappa già disponibile sulla pagina web.
 
-Descrivendo le funzioni di prelievo dei dati si continua a far riferimento al caso delle linee: la funzione \code{loadLines} si occupa di richiedere al server tutte le linee monitorate dal servizio. Per prima cosa dunque richiede all'Application la collezione linee, e su questa invoca il metodo \code{fetch}, il quale invia una richiesta AJAX al server di riferimento (per ulteriori dettagli consultare la sezione \ref{sec:collezioni}). Se i dati vengono caricati correttamente, la funzione provvederà tramite il metodo \code{filterCollection} ad impostare la proprietà \code{checked} delle istanze linea riscontrate nel parametro.
+Descrivendo le funzioni di prelievo dei dati si continua a far riferimento al caso delle linee: la funzione \code{loadLines} si occupa di richiedere al server tutte le linee monitorate dal servizio.
+
+Per prima cosa dunque richiede all'Application la collezione linee, e su questa invoca il metodo \code{fetch}, il quale invia una richiesta AJAX al server di riferimento (per ulteriori dettagli consultare la sezione \ref{sec:collezioni}). Se i dati vengono caricati correttamente si imposteranno le proprietà \code{checked} delle istanze linea riscontrate nel parametro.
 
 \subsection{Collezioni} % (fold)
 \label{sub:collezioni}
 
 % subsection collezioni (end)
-Descritta la definizione dei modelli e conclusasi la trattazione del Router, fondamentale per la piena comprensione di questa sezione, si procede alla costruzioni delle entità capaci di gestire molteplici istanze dei modelli: le Collection.
+Descritta la definizione dei modelli e conclusa la trattazione del Router, fondamentale per la piena comprensione di questa sezione, si procede alla costruzioni delle entità capaci di gestire molteplici istanze dei modelli: le Collections.
 
-Focalizzandosi sempre sulla direzione, la struttura base per la definizione di una collection è questa:
+Focalizzandosi sempre sulla direzione, la struttura base per la definizione di una collection è la seguente:
 
 \begin{lstlisting}
 var Collection = require('core/Collection');
@@ -221,16 +225,17 @@ var Directions = Collection.extend({
 module.exports = Directions;
 \end{lstlisting}
 
-Come nella dichiarazione dei Model, la collezione crea un riferimento alla struttura base Collection e, questa volta, anche al modulo cui deve immagazinare le istanze. Durante la definizione del modello questo riferimento verrà passato alla proprietà \code{model}, così da permettere alla collezione di comprendere quali oggetti deve catalogare.
+Come nella dichiarazione dei modelli, la collezione crea un riferimento alla struttura base Collection e al modello opportuno.
 
-L'unica altra proprietà definita oltre a model è \code{url}. Questa proprietà è fondamentale durante la chiamata della funzione \code{fetch} della collezione, introdotta nella sezione precedente.
+La collezione oltre a dover conoscere il modello di riferimento dovrà essere inizializzata con un \code{url}. Tale proprietà indicherà alla collezione la rotta su cui richiedere le informazioni per istanziare/modificare i propri modelli.
 
 La funzione \code{fetch} è forse la più importante tra quelle offerte dal modulo Collection, in quanto in essa si basa la struttura di richieste dei dati al server. Per facilitare la comprensione, precedentemente si era affermato che il Router si facesse carico delle richieste dati al server e per poi caricarli nel client. Quest'affermazione è inesatta, dato che in realtà Backbone delega questo compito direttamente alla collezione. Attraverso \code{fetch}, la collezione invia una richiesta AJAX al server aspettandosi una risposta in formato JSON, la quale contiene una collezione di dati di struttura identica a quella del modello cui la collezione fa riferimento.
 La funzione \code{fetch} inoltre incorpora le {\itshape callback} \code{success} ed \code{error}, le quali verranno invocate rispettivamente nel caso di una ricezione corretta dei dati o dalla presenza di un errore nella risposta.
 
-Le collezioni di Backbone dispongono anche di una struttura di {\itshape event handling}: all'interno del metodo \code{initialize} è possibile impostare un {\itshape event handler} tramite il comando \code{this.on(event, callback)}. Il primo parametro che gli verrà passato sarà il tipo di evento da ascoltare, in questo caso il cambiamento di un oggetto nella collezione, mentre come secondo parametro verrà passata la funzione adibita alla gestione di quell'evento.
+Le collezioni di Backbone dispongono anche di una struttura di {\itshape event handling}: è possibile impostare un {\itshape event handler} tramite il comando \code{this.on(event, callback)}. Il primo parametro che gli verrà passato sarà il tipo di evento da ascoltare, in questo caso il cambiamento di un oggetto nella collezione, mentre come secondo parametro verrà passata la funzione adibita alla gestione di quell'evento.
 
 Per quanto riguarda gli altri metodi definiti all'interno della Collection, essi sono adibiti alla costruzione del frammento url che verrà passato al Router, così da poter aggiornare l'indirizzo in base alle preferenze espresse dall'utente.
+
 Il principio di funzionamento è il seguente: attraverso l'{\itshape event handler} definito al momento della creazione, la collezione rimane in ascolto di eventuali cambiamenti. Non appena un modello viene modificato (ciò vuol dire che il suo attributo checked è cambiato), il compito della collezione è di aggiornare la stringa che rappresenta il parametro delle direzioni selezionate. Per fare ciò, viene invocato il metodo \code{setSelectedOnUrl}, il quale delega il compito di aggiornamento dell'indirizzo al metodo \code{setUrl(trigger, tail, head)}.
 
  \code{setUrl(trigger, tail, head)} richiede tre parametri: il primo rappresenta il parametro \code{option} che deve essere passato alla funzione navigate di Router, mentre \code{tail} e \code{head} corrispondono alle porzioni di indirizzo che dovranno essere poste prima e dopo alla sezione che si vuole modificare.
