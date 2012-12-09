@@ -1,0 +1,346 @@
+\section{Programmazione modulare} % (fold)
+\label{sec:programmazione_modulare}
+
+Una volta appreso JavaScript si nota come questo linguaggio di programmazione abbia oltre ali suoi pregi anche alcuni punti deboli.
+Al giorno d'oggi i pezzi di codice JavaScript sono caratterizzati da queste proprietà: 
+\begin{itemize}
+    \item Il codice viene definito attraverso funzioni le quali sono richiamate immediatamente dopo la loro dichiarazione.
+    \item I riferimenti dalle dipendenze sono fatti attraverso variabili globali le quali vengono caricate in ambiente HTML tramite appositi tag script
+    \item Le dipendenze sono dichiarate in modo debole: il programmatore ha bisogno di sapere l'ordine esatto delle dipendenze. Ad esempio, per definire una classe Direzione che si riferisca ad una Fermata, la classe Fermata deve essere definita prima di Direzione
+    \item Il caricamento degli script lato client può diventare in certi casi molto lento e deve essere ottimizzato
+\end{itemize}
+
+Tutto ciò può diventare difficoltoso per gestire progetti complessi, in modo particolare quando gli script cominciano ad avere troppe dipendenze, le quali tendono a sovrapporsi e nidificarsi. Inoltre la definizione manuale dei tag script non è scalabile, e non offre la possibilità di caricare gli script su richiesta.
+
+\subsubsection{Common.js} % (fold)
+\label{ssub:common_js}
+Per ovviare a questo problema, Common.js (CJS) definisce un formato di modularità che si interfaccia col linguaggio JavaScript odierno, ma non è necessariamente costretto dalle limitazioni degli ambienti JavaScript presenti nei browser. Per assicurare una compatibilità tra l'ambiente di sviluppo e il browser, CJS utilizza un metodo di traduzione dei moduli in un formato intrerpretabile dl browser. Il formato di modularità di CJS permette la presenza di un solo modulo per file, perciò vi è il bisogno di un ``modulo di trasposizione'' per definire più di un modulo in un file, cercando di ottimizzare il codice al massimo.
+
+In questo modo CJS si è potuta concentrare su come ovviare al problema delle dipendenze circolari, oltre che a creare dei riferimenti alle dipendenze. Tuttavia, non è riuscita a risolvere tutti i problemi, come il caricamento asincrono dei dati. Inoltre le misure di compatibilità prese per i browser pongono un ulteriore problema per gli sviluppatori, in quanto effettuare debugging su un singolo file, mentre lo sviluppo avviene su pià file, risulta difficoltoso.
+% subsubsection common_js (end)
+\subsubsection{AMD} % (fold)
+\label{ssub:amd}
+AMD (Asynchronous Module Definition) si occupa di ovviare anche agli ultimi problemi di CJS. L'obiettivo del formato AMD è quello di fornire una soluzione al problema della modularità in JavaScript, per poter essere usata dagli sviluppatori di oggi. AMD è un formato per la definizione di moduli, dove sia moduli che dipendenze possono essere caricate in modo asincrono. AMD si basa sulla pratica di CJS per definire le dipendenze ed i riferimenti ma al contrario di di common.js permette anche la definizione di più moduli in un singolo file, se necessario.
+% subsubsection amd (end)
+\newpage
+\subsubsection{Brunch} % (fold)
+\label{ssub:brunch_io}
+Al fine di fare utilizzo di questi formati, si è scelto di utilizzare un application assembler quale {\itshape Brunch}.
+
+Brunch, basandosi sui formati AMD e Common.js, offre una struttura modulare, offrendo metodi di riferimento ed esportazione dei moduli. I moduli sono definiti all'interno di un file JavaScript, ed organizzati in cartelle in maniera opportuna. Brunch rimane in osservazione per eventuali modifiche dei file, e per ognuna di esse, compila tutti gli script ed eventuali template in moduli Common.js.
+
+L'applicazione generata con Brunch è definita da un esiguo numero di file statici, i quali possono essere poi trasferiti in qualsiasi altro ambiente. Brunch offre anche un'opzione di {\itshape minify}, che permette una compilazione del codice in maniera ristretta, per garantire un caricamento più rapido lato client.
+
+Brunch è inoltre completamente agnostico a qualsiasi tipo di framework, libreria, linguaggio di programmazione e templating. Permette dunque una programmazione altamente libera garantendo la comodità di non preoccuparsi di definire moduli adeguati ai formati AMD e CJS.
+
+Al fine di introdurre lo sviluppatore immediatamente alla programmazione minimizzando la fase di setup, Brunch definisce inoltre un set di ``scheletri''. Gli scheletri sono delle impostazioni personalizzabili che forniscono un buon punto di inizio per lo sviluppo di nuove applicazioni. Ogni Scheletro definisce un determinato framework, uno o più linguaggi e librerie.
+% subsubsection brunch_io (end)
+% section programmazione_modulare (end)
+\newpage
+
+\section{Sviluppo} % (fold)
+\label{sec:sviluppo}
+Avendo definito tutti gli strumenti di sviluppo, si prosegue ora alla creazione del progetto.
+
+Il funzionamento base di questo servizio si basa su questo elenco di passaggi:
+
+\begin{enumerate}
+    \item l'utente accede al sito web per la consultazione dei trasporti pubblici
+    \item il client richiede al server le linee autobus che sono monitorate dal servizio
+    \item il client carica le informazioni delle linee e le visualizza all'utente
+    \item l'utente seleziona una o più linee di sua preferenza, e procede con la visualizzazione delle direzioni
+    \item il client richiede al server le direzioni di cui ha bisogno, specificando le linee selezionate
+    \item il client carica le informazioni delle direzioni e le visualizza all'utente
+    \item l'utente seleziona una o più direzioni che vuole consultare, e procede alla loro visualizzazione sulla mappa
+    \item il client richiede al server le fermate delle direzioni di cui ha bisogno, specificando le direzioni
+    \item il client carica le informazioni delle fermate e le visualizza all'utente su una mappa
+    \item il client richiede al server gli autobus in circolazione sulle direzioni di cui ha bisogno, specificando le direzioni
+    \item il client carica le informazioni degli autobus e li visualizza all'utente su una mappa
+\end{enumerate}
+\newpage
+
+I requisiti progettuali imposti all'inizio della progettazione richiedono che l'esperienza utente non sia limitata ad uno scorrimento sequenziale di questi punti dal numero 1 all'11, ma possa anche iniziare da punti successivi al primo, attraverso l'inserimento di un url che passi parametri correttamente interpretabili dal server.
+
+Dopo aver specificato il caso d'uso relativo al servizio web, si proceda con la definizione delle base del progetto: il modulo Application.
+
+\subsection{Application} % (fold)
+\label{sub:application}
+
+Il modulo Application è definito come il ``padre'' di tutti gli altri moduli presenti in questo progetto.
+La sua struttura è molto semplice: non dispone di proprietà, in quanto questo modulo non deve contenere alcun tipo di contenuto informativo, ma solo richiedere e mantenere i riferimenti degli altri moduli del progetto, così da poter servire in caso di bisogno gli altri moduli.
+
+Application definisce un solo metodo, \code{initialize()}, all'interno del quale l'Application carica tutti i moduli, quali collezioni, viste e router, con l'apposito metodo fornito da Brunch. Una volta caricati tutti i moduli richiesti, l'applicazione procede alla loro inizializzazione passando come parametri eventuali proprietà necessarie. 
+
+Application sarà quindi l'unico modulo importato nella pagina HTML di riferimento dell'applicazione attraverso il tag \code{<script>} e, attraverso la chiamata al metodo \code{initialize()} si occuperà di caricare tutti gli altri moduli.
+% subsection application (end)
+
+\subsection{Modelli del servizio} % (fold)
+\label{sub:modelli_del_servizio}
+
+Avendo dunque definito la struttura base della nostra applicazione, si proceda con la definizione e creazione del cuore del servizio: i modelli.
+
+Seguendo le specifiche del diagramma delle classi di progetto definite nel capitolo \ref{cha:progettazione}, vi è il bisogno di definire quattro modelli: Linea, Direzione, Fermata e Autobus.
+
+Come esempio dimostrativo, verrà mostrata la sintassi di definizione del modello Direzione:
+
+\begin{lstlisting}
+var Model = require('core/Model');
+
+var Direction = Model.extend({
+    defaults: {
+        id: "",
+        name: "",
+        checked: false,
+        },
+    changeChecked: function() {
+        this.checked = !this.checked;
+    }
+});
+
+module.exports = Direction;
+\end{lstlisting}
+
+Innanzitutto vieni importato il modulo Model, il quale mette a disposizione tutte le funzionalità base del modulo Model di Backbone.
+Segue dunque la definizione del modello Direction estendendo con le opportune proprietà/metodi la classe base.
+L'hash \code{defaults} permette di specificare gli attributi di base che ogni modello deve contenere. Quando viene creata un'istanza del mdello, se uno qualsiasi degli attributi contenuti all'interno di \code{defaults} non viene specificato, esso sarà impostato al suo valore di default.
+Per il modello Direzione, vengono specificati le proprietà definite come attributi nel diagramma delle classi di progetto realizzato nel capitolo \ref{cha:progettazione}. La proprietà \code{checked} farà riferimento alla casella di selezione specifica all'istanza del proprio modello, e verrà invocato il metodo \code{changeChecked()} ogniqualvolta la casella sarà selezionata o deselezionata.
+
+Una volta definito il modello si definisce la sua esportazione che ne garantisce un riferimento per gli altri moduli.
+
+Una volta terminata la costruzione della struttura portante dell'applicazione, si può proseguire alla specifica del fulcro dell'applicazione web: il modulo Router.
+\newpage
+
+\subsection{Router} % (fold)
+\label{sub:router}
+
+Il Router è il modulo fondamentale per la realizzazione di un'applicazione web moderna, consentendo, tramite il suo sistema di rotte, una navigazione dei contenuti del sito web senza aver bisogno di ricaricare la pagina nemmeno una volta.
+Attraverso una strutturazione in sezioni ben definita nelle rotte, il router può comprendere ciò che l'utente sta richiedendo al servizio, ed è capace di richiamare apposite funzioni che si occupano di richiedere al server i dati di cui si ha bisogno e salvarli quindi sul client.
+
+Inoltre attraverso il router è possibile lasciare una traccia nella cronologia di navigazione, consentendo in questo modo all'utente di poter scorrere attraverso i passaggi effettuati all'interno del sito web.
+
+La struttura principale del router è definita nel codice seguente. Per evitare un eccessiva lunghezza di codice sono stati omessi i contenuti delle funzioni.
+
+\begin{lstlisting}
+var Router = require('core/Router');
+
+var application = require('Application');
+ApplicationRouter = Router.extend({
+    routes: {
+        '': 'home'
+        'lines': 'loadLines'
+        'lines/:lines' : 'loadLines',
+
+        'lines/:lines/directions' : 'loadDirections',
+        'lines/:lines/directions/:directions' : 'loadDirections',
+
+        'lines/:lines/directions/:directions/stations' : 'loadMap'
+    }
+
+    <all functions are listed below>
+});
+
+module.exports = ApplicationRouter;
+\end{lstlisting}
+\newpage
+
+Come in ogni definizione di nuovi moduli, ApplicationRouter importa il modulo Router che garantisce le funzionalità base messe a disposizione da Backbone. 
+All'interno di ApplicationRouter viene definita la priprietà \code{route}, il quale conserva al suo interno i riferimenti tra le rotte che il router deve riscontrare e le funzioni che verranno invocate nel caso il riscontro associato ad esse sia positivo.
+
+La struttura della rotta è stato uno degli aspetti su cui si è posta maggiore attenzione, in quanto uno degli obiettivi prefissati per questo progetto è consentire una navigazione interattiva grazie ad una manipolazione dinamica dell'indirizzo.
+
+\subsubsection{modellazione dinamica dell'url} % (fold)
+\label{ssub:modellazione_dinamica_dell_url}
+
+% subsubsection modellazione_dinamica_dell_url (end)
+
+Una delle idee su cui poggiano le fondamenta della costruzione di questa applicazione web si basa sulla possibilità di poter costruire un url in modo dinamico, inserendo in esso i vari parametri che il fruitore del servizio ha selezionato tramite l'interfaccia utente.
+Ogniqualvolta l'utente seleziona una linea e/o direzione di preferenza, la composizione dell'indirizzo cambia in tempo reale, in modo tale che alla premuta del tasto di conferma, esso sia già pronto per una corretta lettura da parte del Router.
+
+L'aggiornamento dell'url avviene attraverso l'utilizzo del metodo nativo \code{navigate} del modulo Router. \code{navigate} concede la navigazione verso un indirizzo che deve essere passato come parametro al metodo. Inoltre ad ogni chiamata di \code{navigate} l'indirizzo a cui si vuole navigare viene salvato nella cronologia, se si vuole evitare questo aspetto si può 
+
+Durante lo sviluppo di questo progetto è stato scelto di richiamare la funzione \code{navigate} all'interno delle collezioni di oggetti. Ciò dipende dal fatto che le sezioni dell'indirizzo rappresentano una parametrizzazione dei dati scelti dall'utente, ovvero le Linee e Direzioni, e dunque le collezioni possono fornire la giusta composizione del frammento al Router, il quale non dovrà fare altro che navigare alla rotta che gli viene definita (la metodologia di composizione verrà definita nella sezione \ref{sec:collezioni}).
+% subsection subsection_name (end)
+\newpage
+
+La struttura dell'indirizzo web concepita per questa applicazione è la seguente, essa viene esposta nella sua completezza, ma durante la navigazione del servizio l'url verrà ``composto'' un passo alla volta:
+
+\begin{lstlisting}
+   lines/:lines/directions/:directions/stations
+\end{lstlisting}
+
+l'indirizzo è suddiviso nella sezione linee, la sezione direzioni ed infine la sezione stazioni. In Backbone, un elemento nella rotta avente i  due punti di prefisso rappresenta un parametro. \code{:lines} e \code{:directions} contengono quindi le linee e le direzioni che l'utente ha scelto di consultare, le quali sono definite attraverso il loro codice identificativo
+
+Lo scopo di questi parametri è duplice: ad esempio, se la sezione dei parametri delle è l'ultima porzione dell'indirizzo (come \code{lines/:lines}), vuol dire che si sta richiedendo l'elenco di tutte le linee, e che quelle presenti nel parametro sono già selezionate. Il router quindi richiederà al server tutti gli oggetti linea e li salverà nella collezione, dopodiché provvederà ad impostare le proprietà \code{checked} degli oggetti linea che corrispono a quelli elencati nel paramentro.
+Se invece al parametro sussegue un'ulteriore porzione di url (come \code{lines/:lines/directions...}), il router comprenderà che si stanno richiedendo degli oggetti Direzione, e per specificare al server di quali direzioni si ha bisogno invierà nella richiesta anche il parametro delle linee.
+
+La composizione dell'indirizzo in sezioni è inoltre utile ai fini dell'utente: dopo aver selezionato per la prima volta le linee e direzioni che si vogliono consultare, l'url rappresenta un link simbolico a quel set di preferenze. Quindi l'utente potrà salvare l'indirizzo e riutilizzarlo per accedere immediatamente alla visualizzazione degli autobus in circolazione, senza dover ripetere il processo di selezione ancora e ancora.
+
+\vspace{1cm}
+
+Tornando al Router, si può notare come le rotte siano definite in tre gruppi distinti: ogni gruppo rappresenta un tipo di sezione che il Router deve saper interpretare ed elaborare. Per ogni gruppo viene chiamata rispettivamente la funzione \code{loadLines}, \code{loadDirections} e \code{loadMap}, dove ognuno è adibito al prelievo delle rispettive risorse. Il nome dell'ultimo metodo non è chiaro: la funzione non si occupa del caricamento della mappa dal server, ma racchiude in se il prelievo degli oggetti fermata e autobus, i quali verranno poi posizionati sulla mappa già disponibile sulla pagina web.
+
+Descrivendo le funzioni di prelievo dei dati si continua a far riferimento al caso delle linee: la funzione \code{loadLines} si occupa di richiedere al server tutte le linee monitorate dal servizio. Per prima cosa dunque richiede all'Application la collezione linee, e su questa invoca il metodo \code{fetch}, il quale invia una richiesta AJAX al server di riferimento (per ulteriori dettagli consultare la sezione \ref{sec:collezioni}). Se i dati vengono caricati correttamente, la funzione provvederà tramite il metodo \code{filterCollection} ad impostare la proprietà \code{checked} delle istanze linea riscontrate nel parametro.
+
+\subsection{Collezioni} % (fold)
+\label{sub:collezioni}
+
+% subsection collezioni (end)
+Descritta la definizione dei modelli e conclusasi la trattazione del Router, fondamentale per la piena comprensione di questa sezione, si procede alla costruzioni delle entità capaci di gestire molteplici istanze dei modelli: le Collection.
+
+Focalizzandosi sempre sulla direzione, la struttura base per la definizione di una collection è questa:
+
+\begin{lstlisting}
+var Collection = require('core/Collection');
+var Direction = require('models/Direction');
+
+var Directions = Collection.extend({
+    
+    model: Direction,
+    
+    url: '/directions',
+    
+    initialize: function() {
+        this.on("change", this.setSelectedOnUrl);
+    },
+    parseSelected : function() {
+        ...
+    },    
+    setSelectedOnUrl: function() {
+        this.setUrl(false)
+    },
+   setUrl: function(trigger, tail, head) {
+        ...
+        router.navigate(this.prefix + this.url, {trigger: trigger})
+        }   
+    },
+    goToStation: function() {
+        router.navigate(url.join('/'), {trigger: true, replace:true})
+    }
+});
+
+module.exports = Directions;
+\end{lstlisting}
+
+Come nella dichiarazione dei Model, la collezione crea un riferimento alla struttura base Collection e, questa volta, anche al modulo cui deve immagazinare le istanze. Durante la definizione del modello questo riferimento verrà passato alla proprietà \code{model}, così da permettere alla collezione di comprendere quali oggetti deve catalogare.
+
+L'unica altra proprietà definita oltre a model è \code{url}. Questa proprietà è fondamentale durante la chiamata della funzione \code{fetch} della collezione, introdotta nella sezione precedente.
+
+La funzione \code{fetch} è forse la più importante tra quelle offerte dal modulo Collection, in quanto in essa si basa la struttura di richieste dei dati al server. Per facilitare la comprensione, precedentemente si era affermato che il Router si facesse carico delle richieste dati al server e per poi caricarli nel client. Quest'affermazione è inesatta, dato che in realtà Backbone delega questo compito direttamente alla collezione. Attraverso \code{fetch}, la collezione invia una richiesta AJAX al server aspettandosi una risposta in formato JSON, la quale contiene una collezione di dati di struttura identica a quella del modello cui la collezione fa riferimento.
+La funzione \code{fetch} inoltre incorpora le {\itshape callback} \code{success} ed \code{error}, le quali verranno invocate rispettivamente nel caso di una ricezione corretta dei dati o dalla presenza di un errore nella risposta.
+
+Le collezioni di Backbone dispongono anche di una struttura di {\itshape event handling}: all'interno del metodo \code{initialize} è possibile impostare un {\itshape event handler} tramite il comando \code{this.on(event, callback)}. Il primo parametro che gli verrà passato sarà il tipo di evento da ascoltare, in questo caso il cambiamento di un oggetto nella collezione, mentre come secondo parametro verrà passata la funzione adibita alla gestione di quell'evento.
+
+Per quanto riguarda gli altri metodi definiti all'interno della Collection, essi sono adibiti alla costruzione del frammento url che verrà passato al Router, così da poter aggiornare l'indirizzo in base alle preferenze espresse dall'utente.
+Il principio di funzionamento è il seguente: attraverso l'{\itshape event handler} definito al momento della creazione, la collezione rimane in ascolto di eventuali cambiamenti. Non appena un modello viene modificato (ciò vuol dire che il suo attributo checked è cambiato), il compito della collezione è di aggiornare la stringa che rappresenta il parametro delle direzioni selezionate. Per fare ciò, viene invocato il metodo \code{setSelectedOnUrl}, il quale delega il compito di aggiornamento dell'indirizzo al metodo \code{setUrl(trigger, tail, head)}.
+
+ \code{setUrl(trigger, tail, head)} richiede tre parametri: il primo rappresenta il parametro \code{option} che deve essere passato alla funzione navigate di Router, mentre \code{tail} e \code{head} corrispondono alle porzioni di indirizzo che dovranno essere poste prima e dopo alla sezione che si vuole modificare.
+ All'interno di \code{setUrl} viene richiamata la funzione \code{parseSelected()}, la quale ha il compito di fornire la stringa contenente gli oggetti che sono stati selezionati: per fare ciò la funzione attua un filtraggio degli elementi con attributo \code{selected} affermativo, e prosegue generando una stringa contenente la concatenazione degli identificatori delle direzioni.
+
+ Una volta ricevuto il parametro, la funzione \code{setUrl} compone il frammento di indirizzo concatenando il prefisso, il parametro e la suffisso, e prosegue all'invocazione del metodo \code{navigate} di Router.
+
+ Il metodo \code{goToStation} è una versione semplificata del metodo \code{setUrl}, il quale viene invocato alla pressione del tasto di conferma nell'interfaccia. \code{goToStation}
+
+\subsection{Viste} % (fold)
+\label{sub:viste}
+
+Attraverso le viste è infine possibile visualizzare all'utente i dati di cui ha bisogno filtrati e modellati attraverso le scelte che ha effettuato durante la navigazione del servizio.
+La struttura generale di una Vista di Backbone è la seguente:
+
+\begin{lstlisting}
+var View     = require('core/View');
+var template = require('templates/DirectionTemplate');
+
+var DirectionView = View.extend({
+      
+      template: template,
+
+      events: {
+      ...
+      }
+
+      initialize {
+      ...
+      }
+
+      render {
+      ...
+      }
+}
+
+module.exports = DirectionView;
+\end{lstlisting}
+
+
+Oltre ad importare le funzioni standard offerte dal modulo View di Backbone, nella definizione di una nuova vista vi è il bisogno di importare un template costruito in precedenza, il quale fornisce alla vista la struttura HTML per la visualizzazione dei dati a cui la vista fa riferimento.
+Alla creazione di una vista è possibile passare una o più di opzioni le quali saranno attribuite alla vista tramite \code{this.options}. Esistono inoltre alcuno opzioni speciali che possono essere attribuite direttamente alla Vista, quali \code{model}, \code{collection}, \code{el}, \code{id}, \code{attributes} \code{className} e \code{tagName}. All'interno della View può essere definita la funzione di inizializzazione, la quale sarà chiamata al momento della creazione della vista.
+
+La proprietà \code{el} definisce un elemento del DOM a cui la vista fa riferimento in ogni momento. Tramite questo riferimento, la vista può effettuare una visualizzazione dei dati all'interno del suo elemento \code{el} in qualsiasi momento, non intaccando il resto della struttura HTML. L'elemento \code{el} viene creato dalle proprietà \code{tagName}, \code{className}, \code{id} e \code{attributues}, oppure può essere assegnato ad un'elemento preesistente nel DOM. Nel caso nessuna di queste opzioni venga adottata, \code{el} rappresenterà un \code{<div>} vuoto.
+Le proprietà \code{model} e \code{collection} permettono di creare un riferimento tra la vista e l'oggetto (o collezione di oggetti) che si deve visualizzare.
+
+Oltre al ruolo di visualizzatori dati, l'altra natura delle Viste di Backbone è quella di rappresentare un Controller. La Vista gestisce un set di eventi specificati all'interno della proprietà \code{events}, i quali sono assegnati a delle funzioni che verranno richiamate ogniqualvolta un determinato evento occorre.
+In questo modo è possibile garantire una visualizzazione dinamica dei dati attribuendo la funzione \code{render()} all'evento di cambio di stato generato dall'oggetto cui fa riferimento la View. In questo modo si ottiene una rappresentazione sempre aggiornata dell'elemento, senza avere il bisogno di ulteriori caricamenti della pagina.
+Oltre alla gestione degli eventi al fine di visualizzare il dato, l'uso degli eventi può garantire anche una manipolazione dei dati cui la Vista fa riferimento.
+Ad esempio, per garantire che gli oggetti linea (o direzione) siano notificati della loro selezione, è stato creato un evento \code{'.click'} della casella di selezione associata all'oggetto della View. Non appena la casella viene selezionata, l'evento viene catturato dalla vista, la quale richiama la funzione \code{changeChecked()} del modello, impostando in modo corretto il valore della sua proprietà.
+
+Tornando alla visualizzazione dei dati, la vista svolge questo compito attraverso l'uso del metodo \code{render()}. Inizialmente questo metodo non svolge nessuna funzione, e deve essere quindi sovrascritto dal programmatore con operazioni cui lui ritiene più opportune.
+Generalmente all'interno della funzione \code{render} viene associato il template di riferimento della View al suo elemento del DOM, nel quale il template può essere ridisegnato ogni volta o appeso. E' buona norma in Backbone inserire un \code{return this} alla fine della funzione \code{render} in modo da abilitare chiamate concatenate tra le viste.
+
+Infine le viste possono essere annidate, in modo da consentire una struttura gerarchica all'apparato di visualizzazione. Durante lo sviluppo del progetto è state definita ad esempio la vista \code{DirectionView}, la quale si propone come un singolo elemento dell'elenco di direzioni, rappresentato da \code{DirectionsView}. Quest'ultima, insieme alla vista \code{MapView} è contenuta all'interno di una vista ``madre'' chiamata \code{MainView}, la quale rappresenta l'intero body della pagina e definisce la macro-struttura dell'interfaccia del servizio.
+% subsection viste (end)
+
+\subsection{Templating} % (fold)
+\label{sub:templating}
+
+Uno dei problemi che bisogna affrontare durante la fase di visualizzazione dei dati sull'interfaccia web è il tipo di metodologia con cui rappresentare le informazioni in modo dinamico. In un applicazione web la struttura funzionale viene sempre gestita attraverso un linguaggio di programmazione quale JavaScript, in cui le risorse vengono gestite e organizzate. Invece per quanto riguarda la sua interfaccia essa si basa, ovviamente, sul linguaggio fondamentale del web, l'HTML.
+
+Dunque per poter essere in grado di rappresentare in modo dinamico le informazioni gestite nell'applicazione web, vi è il bisogno di escogitare un metodo di conversione per essere in grado di ``tradurre'' i dati strutturati in JavaScript in modo tale da poter essere visualizzati tramite HTML.
+
+La soluzione più semplice a questo problema risiede nella possibilità di incorporare JavaScript direttamente all'interno dell'HTML. Per differenziare i due linguaggi in modo che siano interpretati correttamente si utilizzano degli appositi tag che definiscono dove il linguaggio JavaScript inizia e termina all'interno di un documento HTML. Tuttavia questa soluzione risulta poco elegante, in quanto l'utilizzo di due linguaggi differenti in uno stesso documento rende la lettura poco chiara e comprensibile. E' buona norma quindi fare in modo che i due linguaggi siano ben distinti e separati, permettendo solo la comunicazione delle informazioni che si vogliono rappresentare.
+
+I template ricoprono questa funzione, svolgendo un ruolo di ``ponte'' tra la struttura logica e quella rappresentativa. In un template è possibile descrivere una struttura HTML in cui il dato deve essere visualizzato, quest'ultimo viene passato al template come parametro, e viene riconosciuto correttamente grazie all'uso di un preciso tag. Per comunicare i dati ad un template esso può essere richiamato all'interno dell'applicazione similmente ad una chiamata di funzione, in cui i parametri passati rappresentano le informazioni da visualizzare.
+
+I template sono {\itshape logic-less}, ciò vuol dire che la filosofia generale di un template sia quella di contenere meno struttura logica possibile al loro interno. Tutto ciò che deve essere incorporato in un template deve riguardare la semantica, evitando la presenza di cicli o condizioni. Inoltre i template tendono a seguire il principio {\itshape DRY}, che sta per {\itshape Don't Repeat Yourself}. L'idea di base è che ogni informazione deve essere descritta in una struttura rappresentativa una sola volta, cosicché se essa debba essere visualizzata più volte non vi sia bisogno di ridefinire l'informazione ma riapplicare solamente la struttura che la contiene.
+
+\subsubsection{Mustache} % (fold)
+\label{ssub:mustache}
+Un template molto diffuso che fa uso di questi principi è {\itshape Mustache}.
+Una tipica sintassi di Mustache è la seguente: \lstinline!Hello {{name}} {{lastname}}!. Gli elementi contenuti all'interno dei tag {{}} costituiscono il nome dei parametri che vengono passati al template tramite formato JSON, con la tipica forma:
+\begin{lstlisting}
+    {"name": "Valerio", "lastname": "Lanziani"}
+\end{lstlisting}
+Quando il template verrà renderizzato, al posto dei nomi dei parametri verranno visualizzati i rispettivi valori. Oltre alla visualizzazione di semplici stringhe, Mustache permette attraverso i tag \lstinline!{{#list}}{{/list}}! il passaggio di collezoni di oggetti, i quali verrano visualizzati in modo sequenziale all'interno dei due tag. Allo stesso modo è possibile passare come parametri dei metodi che dovranno tornare come valore la stringa che si desidera mostrare.
+
+Per quanto Mustache offra in modo sintetico le funzionalità base per una visualizzazione pulita e comprensibile delle informazioni, questo template pecca di fin troppa semplicità.
+Non è ad esempio possibile, se si dispongono di strutture dati nidificate, poter estrarre l'informazione desiderata: Mustache richiede sempre e solo un'informazione diretta dal parametro che gli viene passato.
+Essendo un template {\itshape logic-less} Mustache non integra quindi semplici funzioni logiche che potrebbero tornare utili durante la visualizzazione di una struttura particolarmente complessa.
+% subsubsection mustache (end)
+
+\subsubsection{Handlebars} % (fold)
+\label{ssub:handlebars}
+Per ovviare a questi problemi si è fatto uso del template {\itshape Handlebars}.
+Handlebars applica gli stessi principi {\itshape DRY} e {\itshape logic-less} come Mustache, pur offrendo delle semplici funzioni logico che possono tornare utili in fase di rendering.
+
+Handlebars garantisce una completa compatibilità con il template Mustache, offrendo lo stesso tipo di sintassi descritta in Mustache. E' dunque possibile importare direttamente l'intera struttura creata con Mustache in un template Handlebars, così da poter iniziare subito ad usufruire delle caratteristiche introdotte da questo template.
+
+Nel caso si disponga di una struttura dati nidificata come, ad esempio:
+\begin{lstlisting}
+    {"fullname": {"name": "Valerio", "lastname": "Lanziani"}}
+\end{lstlisting}
+Non sarebbe possibile con Mustache la richiesta del valore ``name''. Tramite Handlebars, è possibile invece utilizzare la sintassi \lstinline!{{fullname.name}}! per permettere al template di rappresentare anche informazioni nidificate.
+
+Handlebars fornisce anche la possibilità di definire degli Helpers, ossia delle funzioni a cui è possibile passare dinamicamente uno o più parametri. Attraverso la sintassi \lstinline!{{{link line}}}! è possibile richiamare la funzione link definita nel template nel modo seguente:
+\begin{lstlisting}
+Handlebars.registerHelper('link', function(line) {
+  return new Handlebars.SafeString(
+    "<a href='" + line.url + "'>" + line.text + "</a>"
+  );
+});
+\end{lstlisting}
+Durante la chiamata dunque \code{link} rappresenta il nome della funzione mentre \code{line} è il parametro che gli viene passato.
+% subsubsection handlebars (end)
+
+% subsection templating (end)
+
+
+% section sviluppo (end)
+

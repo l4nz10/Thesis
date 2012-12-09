@@ -1,0 +1,110 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Academic LaTeX Thesis Template                                   %
+% Author: Alessandro Manfredi <a.n0on3@gmail.com> - www.n0on3.net  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Settings
+\input{settings}
+
+% Begin Document
+\begin{document}
+
+% Frontpage
+\input{contents/other/frontpage}
+\cleardoublepage
+
+% Dedication
+\input{contents/other/dedication}
+\cleardoublepage
+
+% Abstract
+\chapter*{Abstract}{\input{contents/other/abstract}}
+\thispagestyle{empty}
+\cleardoublepage
+
+% Acknowledgements
+\chapter*{Acknowledgements}{\input{contents/other/acknowledgements}}
+\thispagestyle{empty}
+\cleardoublepage
+
+% Starts Roman page numbering
+\newpage
+\setcounter{page}{1}
+\pagenumbering{Roman}
+\pagestyle{headings}
+
+% ToC, LoF, LoT
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+\listoffigures
+\listoftables
+\cleardoublepage
+
+% Start page numbering
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\chapter*{Introduction}
+\chaptermark{Introduction}
+{\input{contents/other/introduction}}
+\addcontentsline{toc}{chapter}{Introduction}
+
+% Chapters
+\chapter{Il problema}\label{chapter:introduzione_al_problema}
+\input{contents/chapters/introduzioneAlProblema}
+
+\chapter{Architettura del servizio}\label{chapter:architettura}
+\input{contents/chapters/architettura}
+
+\chapter{Modellazione}\label{chapter:modellazione}
+\input{contents/chapters/modellazione}
+
+\chapter{Progettazione}\label{cha:progettazione}
+\input{contents/chapters/prog_dcd}
+
+\chapter{Frameworks}\label{cha:frameworks}
+\input{contents/chapters/prog_framework}
+
+\chapter{Realizzazione}\label{cha:realizzazione}
+\input{contents/chapters/realizzazione}
+
+% chapter realizzazione (end)
+
+% chapter progettazione (end)
+% ...other chapters here
+
+\chapter{Examples}\label{chapter:examples}
+\input{contents/chapters/chapter-howto}
+
+% Starts roman page numbering
+\newpage
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+% Appendixes
+\appendix
+\chapter{Appendix A Title}\input{contents/appendixes/appendix_a}
+\chapter{Appendix B Title}\input{contents/appendixes/appendix_b}
+
+% Acronyms and Glossary
+\newpage
+\glsaddall
+\renewcommand{\glsgroupskip}{}
+\printglossary[type=\acronymtype,style=long,title=Table of Acronyms]
+
+\newpage
+\printglossary[style=altlist,title=Glossary]
+
+% Bibliography
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+% Uncomment the following line if you want all of the bib entries to be displayed
+%\nocite{*}
+\bibliographystyle{\mybibstyle}
+\footnotesize{
+ \bibliography{contents/other/references_url.bib}
+}
+
+\end{document} 

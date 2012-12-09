@@ -1,0 +1,171 @@
+Dopo aver definito il diagramma delle classi di progetto nel capitolo precedente, si prosegue ora alle scelte di sviluppo per la creazione della struttura di un servizio di consultazione delle linee dei trasporti urbani.
+
+Per quanto riguarda la scelta del linguaggio di programmazione, l'ovvia scelta è ricaduta sul JavaScript, attualmente il linguaggio standard {\itshape de facto} per la realizzazzione di siti e applicazioni web.
+
+JavaScript è un linguaggio di scripting orientato agli oggetti, la cui caratteristica principale è quella di essere un linguaggio interpretato: il codice non viene compilato, ma interpretato (in JavaScript lato client, ogni browser in circolazione ormai dispone di un interprete appropriato).
+JavaScript è un linguaggio debolmente tipizzato, in quanto le variabili non devono essere definite da un tipo, ma questo verrà definito ogni volta che verrà assegnato un valore alla variabile. JavaScript è un linguaggio totalmente orientato agli oggetti, ogni variabile ha una struttra array associativa, e permette di definire più proprietà all'interno di una singola variabile.
+
+Un'aspetto fondamentale ai fini di questa tesi è il comportamento di JavaScript lato client: in questo caso il codice viene eseguito direttamente sul client e non sul server. Il vantaggio di questo approccio è che, anche con la presenza di script particolarmente complessi, il server non viene sovraccaricato a causa delle richieste dei clients. Questo linguaggio pone anche alcuni svantaggi: ad esempio, ogni informazione che presuppone un accesso a dati memorizzati in un database remoto deve essere rimandata ad un linguaggio che effettui esplicitamente la transazione, per poi restituire i risultati ad una o più variabili JavaScript; operazioni del genere richiedono il caricamento della pagina stessa, il che comporta ad una cattiva esperienza utente durante la navigazione web. Fortunatamente, con l'avvento della tecnica AJAX (la quale verrà descritta più avanti) questi limiti sono stati superati.
+
+\vspace{1cm}
+Specificato il linguaggio utilizzato per lo sviluppo, vi è bisogno di implementare la struttura definita attraverso il diagramma delle classi di progetto. Facendo riferimento inoltre ai requisiti architetturali specificati nel capitolo \ref{chapter:architettura}, si è preferito fare utilizzo di un framework che permetta uno sviluppo attinente ai paradigmi dell'architettura e facilitare lo sviluppo grazie ad un ambiente con una struttura base già definita.
+Allo stato attuale, i framework principali e più famosi per lo sviluppo di applicazioni web sono tre: {\itshape Ember.js}, {\itshape Spine.js} e {\itshape Backbone.js}. Come è possibile notare dal suffisso, le tre piattaforme si basano su JavaScript, e tutti e tre soddisfano requisiti architetturali come MVC e REST.
+
+In ordine di scegliere il framework migliore per lo sviluppo dell'applicazione obiettivo di questa tesi sono stati studiati gli aspetti generici di ogni framework, in modo da valutarne vantaggi e svantaggi mettendoli a confronto.
+
+\vspace{1cm}
+Segue dunque una breve descrizione dei sopracitati framework, in cui verranno specificate le proprietà, i vantaggi e gli svantaggi dello sviluppo su ognuna di queste tre piattaforme.
+
+\newpage
+
+\section{Ember.js} % (fold)
+\label{sec:ember_js}
+
+Ember è un framework JavaScript con una struttura fortemente orientata sul pattern MVC. Come gli altri framework offre quindi una struttura di Modelli, Viste e Controlli.
+
+Ember specifica quindi, insieme a molti altri, i moduli per Model, View e Controller, che risultano essere il cuore pulsante della piattaforma.
+Oltre a questo, Ember fornisce un sistema per una facile creazione e manipolazione di template, i quali sono di grande aiuto per la visualizzazione di molteplici dati che sono affetti da cambiamenti nel tempo.
+
+Una qualsiasi applicazione web viene definita innanzitutto dai suoi dati. Ember offre una struttura ben congeniata per il salvataggio e la manipolazione dei dati attraverso il modulo Model. Un Model, oltre a contenere dei dati, offre una struttura all'interno di essi per definire ulteriori dati od operazioni sui modelli. Ogni oggetto Model può contenere una o più proprietà, ossia attributi, che specificano informazioni e funzioni che l'oggetto può offrire.
+
+I dati dunque devono essere visualizzati in modo che l'utente possa consultarli ed interagirci. Per far ciò Ember introduce il modulo View, il quale predispone dei metodi di visualizzazione secondo delle direttive imposte dallo sviluppatore facendo uso di un template. Anche se Ember supporta un discreto set di template diversi, quello che Ember usa di default è Handlebars. Handlebars è un famoso linguaggio di templating semantico, il quale immerge nel normale HTML delle semplici espressioni, le quali hanno il compito di visualizzare i dati che gli vengono passati come riferimento in maniera dinamica.
+
+Tornando ai modelli, un singolo modello può contenere un solo dato del tipo definito. Per creare una collezione di modelli dello stesso tipo si fa uso del Controller. In Ember questi moduli vengono chiamati ArrayController, e dal loro nome si intuisce che oltre al semplice contenimento di più dati, offrono anche un set di funzioni definite dallo sviluppatore per manipolare i dati stessi, come prelievo, modifica e salvataggio.
+\newpage
+Ciò che distingue maggiormente Ember dagli altri framework per lo sviluppo di applicazioni web sono tre caratteristiche particolari:
+
+\begin{itemize}
+    \item Bindings
+    \item Proprietà computate
+    \item Templates ad aggiornamento automatico
+\end{itemize}
+
+\subsubsection{Bindings} % (fold)
+\label{ssub:bindings}
+I bindings, o collegamenti, permettono di mantenere una o più proprietà di oggetti differenti in sincronia. In questo modo una proprietà potrà fare riferimento ad una proprietà di un'oggetto differente e, in caso di una modifica di uno delle due, la modifica verrà propagata anche all'oggetto collegato, evitando dunque il problema di dover modificare più volte attributi presenti in diversi modelli.
+% subsubsection bindings (end)
+
+\subsubsection{Proprietà computate} % (fold)
+\label{ssub:propriet_computate}
+Le proprietà computate permettono di trattare una funzione come una proprietà, specificando nella dichiarazione della proprietà il comportamento della funzione. Il vantaggio è che le proprietà computate funzionano in sinergia coi bindings, e permettono dunque di creare risultati con strutture sia semplici che complesse.
+% subsubsection propriet_computate (end)
+
+\subsubsection{Templates ad aggiornamento automatico} % (fold)
+\label{ssub:templates_ad_aggiornamento_automatico}
+L'aspetto forse più importante di Ember risiede nei templates ad aggiornamento automatico: facendo uso di Handlebars, è possibile immergere in una pagina HTML un riferimento ad uno o più proprietà di un'oggetto di Ember, le quali verranno visualizzate a seconda del valore contenuto in esse. La particolarità è che i template non visualizzano solamente la proprietà, ma mantengono un binding su di essa, in modo che in qualsiasi momento questa cambi, il template modificherà dinamicamente la visualizzazione aggiornandola al nuovo valore.
+% subsubsection templates_ad_aggiornamento_automatico (end)
+
+% section ember_js (end)
+
+\section{Spine.js} % (fold)
+\label{sec:spine_js}
+Spine è il secondo framework su cui si pone l'attenzione in questo studio delle migliori piattaforme per lo sviluppo di WebApp.
+
+Come Ember, Spine offre un'architettura basata sul pattern MVC, potendo servire anche qui moduli per la definizione di dati, visualizzazione, estrazione, manipolazione e salvataggio. Al contrario di Ember, per la visualizzazione Spine non fornisce un sistema di templating già incluso nel framework. Il cavallo di battaglia di Spine è la sua semplicità, questo framework infatti è composto solo da moduli essenziali, e lascia tutto il resto alla libertà di scelta dello sviluppatore.
+
+\subsubsection{Model} % (fold)
+\label{ssub:spine_model}
+
+Al fine di definire dei dati da manipolare in un ambiente client, Spine fornisce il modulo Model, nel quale i dati caricati dal server vengono immagazzinati e risultano pronti per la modifica. I modelli sono il cuore di Spine, ed oltre ad immagazzinare dati possono, come Ember, contenere delle funzioni logiche associate alle informazioni contenute negli oggetti.
+A differenza di Ember (e Backbone, come si vedrà in seguito), i modelli di Spine non garantiscono una definizione delle proprietà in maniera dinamica (ergo l'aggiunta di proprietà in un'istanza anche dopo che il modello è stato definito), ma necessitano di essere configurate durante la dichiarazione del modello.
+Un'altra caratteristica unica di Spine è l'assenza di collezioni: questa piattaforma non fornisce dei moduli per la gestione di molteplici istanze di un modello. In ogni Model di spine vengono forniti i metodi save() e load(), i quali, se richiamati, sincronizzano il modulo con il server, salvando o caricando l'istanza in remoto.
+% subsubsection model (end)
+\newpage
+\subsubsection{View} % (fold)
+\label{ssub:spine_view}
+
+Per la visualizzazione dei dati, Spine usa un modulo Vista unico tra i framework presi in studio: nella terminologia di Spine, le Viste sono semplici frammenti di codice HTML che compongono l'interfaccia dell'applicazione. Questa piattaforma non dispone di widget per la realizzazione di interfacce e non detta alcuna struttura base per la struttura delle viste. Tutto è lasciato a discrezione dello sviluppatore.
+
+Per una visualizzazione dinamica e strutturata dei dati su una pagina web vi è bisogno quindi di immergere il codice in un testo HTML, separando i due aspetti tramite opportuni tag per la distinzione del linguaggio HTML da quello applicativo.
+In altre parole, si può affermare che in Spine non esiste una View vera e propria.
+% subsubsection view (end)
+
+\subsubsection{Controller} % (fold)
+\label{ssub:spine_controller}
+
+Riguardo la gestione dei dati, Spine fornisce un modulo di controllo, il Controller per l'appunto. A differenza di Ember, in Spine non costituisce una collezione di modelli, ma assume il semplice ruolo di delegare delle funzioni a seconda della ricezione di eventi definiti nella sua dichiarazione. Alla sua dichiarazione, vi è il bisogno di associare un elemento del DOM al Controller. Dopodiché sarà possibile definire un set di eventi generati da elementi situati all'interno dell'elemento specificato, associati ad una o più funzioni, anch'esse dichiarate all'interno della struttura del controller.
+% subsubsection controller (end)
+
+% section spine_js (end)
+\newpage
+
+\section{Backbone.js} % (fold)
+\label{sec:backbone_js}
+
+L'ultimo framework posto sotto analisi è Backbone. Come le altre due piattaforme descritte in precedenza, Backbone fornisce una struttura avanzata per lo sviluppo di applicazioni web fornendo modelli per la realizzazione di strutture dati, delle collezioni per una gestione contemporanea di più modelli e delle viste provviste di una struttura di event handling.
+
+Al contrario di Ember e Spine, Backbone non dichiara mai di possedere una struttura basata sul pattern MVC. Infatti Backbone non fornisce un modulo per la creazione di controller ma, come si potrà vedere, gli aspetti tralasciati da questa mancanza vengono recuperati in qualche modo da altri moduli.
+
+Backbone brilla grazie alla sua struttura semplice e pratica, offrendo un framework leggero e snello per chi ha bisogno di sviluppare un'applicazione web di modeste proporzioni ma mantenendo un'architettura di discreta complessità così da permettere la realizzazione di siti web più avanzati.
+
+\subsubsection{Model} % (fold)
+\label{ssub:backbone_model}
+
+Anche in Backbone, come negli altri framework, viene fornita una struttura per la rappresentazione di dati tramite modelli. Come si può ormai intuire, questo modulo offre caratteristiche assai simili alla controparte dei suoi avversari, permettendo di definire dei dati attraverso un'elenco di proprietà che possono a loro volta rappresentare semplici contenuti informativi o funzioni logiche definite per la fornitura e manipolazione dei dati presenti all'interno del modello.
+Una particolarità dei modelli di Backbone è la loro natura spontanea nel generare eventi di cambio di stato. Al momento della creazione di un modello, esso viene automaticamente collegato ad un oggetto evento, che si occuperà di notificare chiunque sia in ascolto non appena avvenga una modifica nel Model.
+% subsubsection model (end)
+
+\subsubsection{Collection} % (fold)
+\label{ssub:backbone_collection}
+Diversamente da Ember e Spine, Backbone fornisce in modo esplicito un modulo per la collezione di uno o più oggetti di uno stesso modello.
+Collection dunque rappresenta un insieme ordinato di modelli. Al momento della sua definizione, vi è il bisogno di specificare una proprietà model che permetterà alla collezione di riconoscere i tipi di dato di cui deve tener traccia.
+Attraverso le collezioni, Backbone fornirce metodi semplici e diretti per operare su gruppi di dati, facendo uso dell'unica libreria richiesta obbligatoriamente al setup di questo framework: {\itshape Underscore.js}. In breve, Underscore è una libreria che offre numerose funzioni per lo scorrimento, filtraggio, modifica e ricerca su gruppi di dati.
+Una Collection inoltre può contenere una o più funzioni, proprio come accade nei modelli, in modo da poter definire metodi per la gestione e l'estrapolazione di uno o più dati presenti nella collezione.
+Un'altra peculiarità delle collezioni di Backbone è la caratteristica di ``ereditare'' gli eventi generati dal modello che la collezione integra. In questo modo, ad esempio, non appena un'oggetto della collezione notifica un cambio di stato, l'intera collezione notificherà a sua volta questo tipo di evento, cosicché eventuali ascoltatori sulla collezione potranno accorgersi del cambiamento ed operare di conseguenza.
+% subsubsection collection (end)
+
+\subsubsection{View} % (fold)
+\label{ssub:backbone_view}
+Il modulo View è ciò che permette a Backbone la visualizzazioni dei dati rappresentati nei modelli. Da come sono strutturati, essi non definiscono niente della struttura HTML o del CSS al posto dello sviluppatore, ma fanno utilizzo di una qualsiasi libreria JavaScript per il  templating. L'idea generale di Backbone è quella di organizzare un'interfaccia tramite una o più viste, anche annidate tra loro, le quali possono far riferimento sia ad un singolo modello che ad una collezione di essi. Ogni vista può quindi essere aggiornata autonomamente non appena il modulo o la collezione di riferimento attua un cambio di stato, così da non aver bisogno di riscrivere l'intera pagina.
+E' dunque possibile definire delle funzioni associate a determinati eventi del modulo di riferimento, in modo tale che la vista possa sempre monitorare le continue modifiche del modello e possa agire su di esse in modo coerente. Si può notare come questa peculiarità avvicina molto la vista al concetto di Controller, e in effetti la View è il modulo che per più aspetti simula lo strato controllore.
+% subsubsection view (end)
+
+% section backbone_js (end)
+\newpage
+
+
+\section{Caratteristiche comuni e valutazioni finali} % (fold)
+\label{sec:caratteristiche_comuni_e_valutazioni_finali}
+
+Oltre ai principali tre moduli che definiscono la struttura MVC di Ember, Spine e Backbone, tutti e tre i framework implementano inoltre altre caratteristiche comuni per la gestione delle rotte in un sito web. Una di particolare importanza è il Router.
+
+\subsubsection{Router} % (fold)
+\label{ssub:router}
+Il modulo Router è la risorsa essenziale al fine di creare un'applicazione web dinamica e composta da una struttura di sezioni tale che l'applicazione possa rispondere in maniera adeguata a seconda della sezione in cui si trova.
+
+L'url di un sito web rappresenta l'indirizzo in cui possono essere recuperate determinate risorse. Ogni volta che viene inserito un nuovo url, il browser invia una richiesta a quell'indirizzo, effettuando il caricamento di una nuova pagina se ciò che gli viene passato è un indirizzo legale.
+Una convenzione degli url tuttavia si basa sull'utilizzo del carattere ``\#'' per evitare l'aggiornamento della pagina. Definendo meglio questo aspetto, si può dire che durante l'inserimento di un url, tutto ciò che viene descritto al seguito del carattere \# viene accettato dal browser, ma non comporta un nuovo caricamento del sito web.
+
+Su quest'aspetto si basa il modulo Router: esso rimane in ascolto sui cambiamenti dell'url sul server a cui fa riferimento e cattura ogni rotta descritta immediatamente dopo il tag \#. Successivamente ne verifica la corrispondenza con delle rotte definite all'interno della sua struttura e, se viene trovato un confronto, invoca una chiamata alla funzione associata a quella rotta.
+
+In questo modo è possibile definire infiniti comportamenti che l'applicazione web può eseguire a seconda di quale sezione l'utente stia facendo accesso, in modo da poter caricare i dati opportuni o visualizzare delle informazioni specifiche.
+% subsubsection router (end)
+
+
+\subsection{Valutazioni} % (fold)
+\label{sub:valutazioni}
+
+Si conclude dunque la descrizione dei tre principali framework candidabili allo sviluppo di un'applicazione web discutendo sui loro aspetti di forza e le loro debolezze, mettendo a confronto le principali caratteristiche delle tre piattaforme.
+
+Riguardo ai modelli, vi sono poche differenze in termini di struttura di questi moduli nei tre framework, in quanto tutti e tre offrono un sistema di proprietà e definizione di funzioni all'interno del Model.
+La vera distinzione giunge attraverso l'aspetto di gestione di multiple istanze dei modelli. Con Ember, è possibile dichiarare un controller che venga adibito al monitoraggio di un gruppo di modelli attraverso una struttura array. Attraverso Backbone tutto ciò è reso ancora più chiaro grazie all'uso dei moduli Collection, che rappresentano in modo pratico il concetto di collezione e offrono inoltre un sistema di notifica annidata degli eventi dei modelli. Sfortunatamente in Spine non è presente un modulo concreto per la memorizzazione di più oggetti, e l'unico modo per ovviare a questo problema è un salvataggio dei dati su un server.
+
+Riguardo ai metodi per la visualizzazione dei dati, i più veloci ed intuitivi risultano quelli di Ember. Attraverso un processo di auto-aggiornamento implementato insieme ai template, Ember permette allo programmatore di definire solo dove il dato venga visualizzato, dopodiché egli non avrà più bisogno di preoccuparsene. Similmente, ma in maniera meno diretta, le viste di Backbone permettono di aggiungere dei template aggiornabili tramite funzioni {\itshape event driven}, ed è possibile inoltre poter annidare più viste in modo da iterare la visualizzazione anche su collezioni di dati. Il tutto risulta in un metodo di visualizzazione più esplicito e meno ``magico'' come quello della controparte Ember, permettendo al programmatore di agire in modo assoluto sui meccanismi di visualizzazione. Per quanto riguarda Spine, anche in questo aspetto il framework non fornisce un metodo accattivante quanto quello delle sue controparti. La scrittura di codice applicativo all'interno di codice HTML risulta dispersiva e poco leggibile, e si preferisce dunque staccare queste due componenti.
+
+Per lo strato di controllo i framework Spine e Ember offrono per alcuni aspetti un sistema simile tra loro: il controller definisce degli eventi a cui deve tener traccia, ed ogni volta che uno degli eventi definiti si presenta, il controller eseguirà la funzione associata a quell'evento. In Backbone invece non è presente un Controller ``tangibile'', ma le sue metodologie sono implementate a grandi linee nel modulo View.
+% subsection valutazioni (end)
+
+\subsubsection{La scelta} % (fold)
+\label{ssub:la_scelta}
+Dovendo sviluppare un'applicazione web che gestisca un sistema informativo dei trasporti urbani, vi è un forte bisogno di una gestione di molteplici collezioni dei vari oggetti, i metodi di gestione devono essere i più diretti possibile per consentire uno sviluppo fluido. Da questo punto di vista Backbone sembra la scelta migliore grazie alla sua definizione chiara di collezioni.
+Per quanto riguarda lo strato di visualizzazione il framework più appetibile risulta Ember, tuttavia Backbone fornisce una struttura chiara e concisa la quale, in sinergia con le collezioni, consente una visualizzazione altamente personalizzabile e manipolabile sia degli insiemi che dei singoli dati.
+
+Un'altro elemento che ha influito sulla scelta di Backbone è il suo grado di semplicità: l'applicazione che si vuole sviluppare deve risultare semplice ed essenziale, tuttavia ha il bisogno di gestire e visualizzare anche un gran numero di informazioni contemporaneamente.
+Da queste necessità, si è preferito Backbone alla complessa struttura di Ember e a quella fin troppo semplice di Spine.
+
+Dunque d'ora in poi, durante la realizzazione del servizio, si farà riferimento agli elementi specifici del framework Backbone.js.
+% subsubsection la_scelta (end)
+
+% section caratteristiche_comuni_e_valutazioni_finali (end)
+
+\newpage

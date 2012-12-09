@@ -1,0 +1,50 @@
+%
+This Chapter presents some examples for those of you who are not familiar with the \LaTeX and the packages used in this templates. \\
+%
+\section{Acronyms}
+%
+\begin{itemize}
+	\item \gls{ABC} 	% Basic usage, this is what you get the first time you use an acronym
+	\item \gls{ABC}		% ... and the second time
+	\item \glspl{ABC}	% ... and the standard plural
+	\item \acrshort{DEF}	% Short version even if used for the first time
+	\item \gls{DEF}		% ... the first non-short version
+\end{itemize}
+%
+\section{Citations}
+%
+\begin{itemize}
+	\item \cite{whyinternetjustworks} 	% Simple citation, for more fancy stuff look for the natbib package
+	\item \cite{berkeleyclouds,art-and-asl} % Multiple citation
+\end{itemize}
+%
+\clearpage
+%
+\section{Figures}
+%
+\begin{center} 					% center whatever is inside
+	\begin{figure}[htbc]			% the 'figure' env... htbc = preferences "here,top,bottom,center"
+	\includegraphics[width=0.95 \linewidth]{contents/images/image_test} % width and image location
+	\caption{Just a picture}
+	\label{label:for:reference}		% you can use this to refer the picture with: \ref{label:for:reference}
+	\end{figure}
+\end{center}
+%
+\section{Tables}
+%
+\begin{center}
+ \begin{table}[htbc]				% Table env..
+  \begin{tabular}{ l | l }			% Tabular env... GIYF
+    \hline
+    Column 1 & Column 2 \\
+    \hline
+    Lorem ipsum dolor sit amet & consectetur adipiscing elit. Curabitur pharetra venenatis odio \\
+    Lorem ipsum dolor sit amet & consectetur adipiscing elit. Curabitur pharetra venenatis odio \\
+    Lorem ipsum dolor sit amet & consectetur adipiscing elit. Curabitur pharetra venenatis odio \\
+    \hline
+  \end{tabular}
+  \label{table:label:for:reference}		% as with figures, \ref{table:label:for:reference}
+  \caption{Just a table}			% Table caption
+ \end{table}
+\end{center}
+%
