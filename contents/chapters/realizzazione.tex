@@ -328,7 +328,7 @@ Nel caso si disponga di una struttura dati nidificata come, ad esempio:
 \end{lstlisting}
 Non sarebbe possibile con Mustache la richiesta del valore ``name''. Tramite Handlebars, è possibile invece utilizzare la sintassi \lstinline!{{fullname.name}}! per permettere al template di rappresentare anche informazioni nidificate.
 
-Handlebars fornisce anche la possibilità di definire degli Helpers, ossia delle funzioni a cui è possibile passare dinamicamente uno o più parametri. Attraverso la sintassi \lstinline!{{{link line}}}! è possibile richiamare la funzione link definita nel template nel modo seguente:
+Handlebars fornisce anche la possibilità di definire degli helpers, ossia delle funzioni a cui è possibile passare dinamicamente uno o più parametri. Attraverso la sintassi \lstinline!{{{link line}}}! è possibile richiamare la funzione link definita nel template nel modo seguente:
 \begin{lstlisting}
 Handlebars.registerHelper('link', function(line) {
   return new Handlebars.SafeString(
@@ -336,11 +336,90 @@ Handlebars.registerHelper('link', function(line) {
   );
 });
 \end{lstlisting}
-Durante la chiamata dunque \code{link} rappresenta il nome della funzione mentre \code{line} è il parametro che gli viene passato.
+Dunque durante la chiamata \code{link} rappresenta il nome della funzione mentre \code{line} è il parametro che gli viene passato.
+Un'altra caratteristica di Handlebars è l'offerta di helpers precostruiti come \lstinline!{{#if condition}}True{{/if}}!. Il blocco provvede a verificare l'esistenza ed il valore del parametro \code{condition}, se questo non risulta essere nullo, falso o vuoto, Handlebars procederà alla visualizzazione del contenuto della condizione if.
+
+Anche se durante lo sviluppo non vi è stato il bisogno di implementare istruzioni logiche per la visualizzazione delle informazioni si è preferito fare uso di Handlebars per usufruire di una piattaforma più completa nel caso di eventuali sviluppi futuri.
 % subsubsection handlebars (end)
 
 % subsection templating (end)
 
+\subsection{Visualizzazione delle informazioni} % (fold)
+\label{sub:visualizzazione_delle_informazioni}
 
+\subsubsection{La mappa} % (fold)
+\label{ssub:la_mappa}
+
+L'obiettivo finale di questa tesi riguarda la rappresentazione delle linee autobus portando il semplice formato testuale verso un modello visivo, in cui è possibile consultare i percorsi delle direzioni in cui la linea si snoda, dove sono posizionate le sue fermate e conoscere inoltre quanti autobus circolano su quel percorso e dove si trovano.
+
+Per ottenere tutto ciò vi è bisogno di una mappa interattiva che permetta una visualizzazione veloce di un area specifica, la possibilità di essere personalizzata secondo le preferenze del programmatore e sfrutti un linguaggio semplice e di facile utilizzo.
+
+Tutto questo viene offerto dal servizio Maps di Google: l'azienda offre liberamente la possibilità di sfruttare la sua tecnologia di visualizzazione geografica offrendo un corposo numero di API insieme ad una chiara documentazione.
+Google Maps offre sia un servizio di mappe statiche che dinamiche: nel primo caso la rappresentazione della mappa è molto semplice, è sufficiente inserire all'interno della pagina web un immagine che faccia riferimento alle API di Maps, specificando tramite parametri impostazioni quali zoom, centro e stile di visualizzazione, ma anche oggetti più complessi come marcatori e linee.
+Per quanto molto semplice una mappa statica risulta poco appetibile, impedendo una qualsiasi interazione attraverso di essa: non è possibile scorrere la mappa o analizzare un punto preciso di interesse, se non tramite una nuova richiesta effettuata da un metodo esterno.
+
+Si sceglie dunque di adottare la libreria delle mappe dinamiche, la quale utilizza il linguaggio JavaScript per la creazione, visualizzazione e modifica della mappa. Grazie a questo i metodi di gestione della mappa possono essere integrati in maniera armoniosa all'interno delle strutture già definite precedentemente nel servizio.
+
+Per la crezione di una mappa si fa ricorso al metodo \code{initialize()}:
+
+\begin{lstlisting}
+    function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(lat, lng),
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+      }
+\end{lstlisting}
+
+
+All'interno di questa funzione vi è bisogno di specificare alcune proprietà fondamentali che permettono alla mappa di essere visualizzata nel modo corretto, quali \code{center}, \code{zoom} e \code{mapTypeId}.
+L'opzione \code{mapTypeId} specifica se la mappa disporrà della vista satellitare o stradale.
+
+Una volta specificate le opzioni, si procede alla creazione della mappa, la quale richiede, ovviamente, le opzioni definite precedentemente. Oltre a questo parametro, vi è il bisogno di passare il riferimento ad un elemento del DOM, come ad esempio un \code{<div>}.
+Durante la creazione la mappa verrà renderizzata automaticamente all'interno dell'elemento che gli è stato fornito, occupando tutto lo spazio a disposizione.
+\vspace{0.5cm}
+
+Ora che la mappa è stata creata, occorre rappresentare le stazioni e gli autobus che l'utente ha selezionato, rendendoli visibili tramite una serie di punti collocati sulle coordinate definite all'interno degli oggetti.
+
+Per fare questo Google Maps offre un sistema di overlays, oggetti legati alla mappa tramite una coordinata. In questo modo durante lo scorrimento gli oggetti sono capaci di muoversi in corrispondenza del verso.
+
+Tra gli overlays sono specificati gli oggetti {\itshape Marker}, il quale scopo è specificare un punto della mappa. Questi oggetti utilizzano un'icona che una volta visualizzata verrà agganciata nella coordinata definita nel marker.
+
+Per la costruzione di un marker la sintassi è la seguente:
+
+\begin{lstlisting}
+  var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(lat, lng),
+      map: map
+  });
+\end{lstlisting}
+
+La creazione di un marker base richiede due parametri: uno di questi è naturalmente la coordinata, senza la quale un marker non può essere definito. Inoltre il marker ha bisogno di un riferimento alla mappa su cui esso deve essere posizionato, ciò viene fatto impostando la proprietà map. Se essa viene tralasciata pur specificando la posizione, l'oggetto non verrà visualizzato.
+
+E' anche possibile assegnare un'immagine diversa da quella predefinita, impostando la proprietà \code{icon} con un oggetto immagine, il quale avrà un riferimento all'icona personalizzata.
+\vspace{0.5cm}
+
+I metodi di creazione della mappa e dei marker vengono definiti all'interno della vista \code{MapView}, questa vista si assume il compito di generare la mappa al primo accesso al sito. Dopodiché, ogni volta che l'utente specifica le direzioni che vuole consultare, la vista procederà al caricamento di tutti i marcatori che rappresentano le stazioni e gli autobus delle direzioni di riferimento, attribuendo per ogni direzione un diverso simbolo.
+
+Per consentire una visualizzazione sempre aggiornata delle posizioni degli autobus, viene definita una funzione specializzata alla richiesta delle informazioni aggiornate riguardo gli autobus appartenenti alle direzioni preferite. La richiesta viene temporizzata per rendere il processo automatico, ed ogni volta che la collezione di autobus verrà ricaricata con i nuovi elementi, la vista provvederà a ristampare i marcatori nella giuste posizioni.
+% subsubsection la_mappa (end)
+
+\subsubsection{Struttura dell'interfaccia} % (fold)
+\label{ssub:struttura_dell_interfaccia}
+
+Per concludere questa sezione di sviluppo vengono descritte brevemente le scelte adottate per la realizzazione di un'interfaccia semplice, leggera e dinamica.
+
+Per fare sì che questo servizio sia fruibile da qualsiasi utente in qualsiasi posto egli si trovi, occore fare in modo che l'applicazione web sia facilmente consultabile da qualsiasi dispositivo, sia questo un computer, tablet o smartphone.
+
+Viene pertanto utilizzato il {\itshape Responsive Web Design}, una tecnica di web design per la realizzazione di siti web capaci di adattare automaticamente il layout della pagina, fornendo una visualizzazione ottimale in funzione dell'ambiente nei quali nei quali vengono visualizzati. Ciò riduce al minimo la necessita di ridimensione e scorrimento della pagina da parte dell'utente, contribuendo ad un'esperienza semplice ed appagante.
+\vspace{0.5cm}
+
+Riguardo la strutturazione del layout di pagina di questo servizio, si è fatto ricorso al framework {\itshape Twitter Bootstrap}
+% subsubsection struttura_dell_interfaccia (end)
+
+% subsection visualizzazione_delle_informazioni (end)
 % section sviluppo (end)
 
