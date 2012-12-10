@@ -79,11 +79,46 @@ Ora che è stata conclusa la breve descrizione del procedimento di estrazione de
 \subsection{Interfaccia client-server} % (fold)
 \label{sub:interfaccia_client_server}
 
-Come descritto nel capitolo architetturale il sistema fa uso di un'interfaccia di tipo REST \ref{sec:direttive_rest}
+Come descritto nel capitolo architetturale il sistema fa uso di un'interfaccia di tipo REST \ref{sec:direttive_rest}. Questo comporta che il client può accedere a qualunque risorsa sul server attraverso delle chiamate HTTP che nel caso specifino saranno effettuate attraverso l'utilizzo del metodo \code{get}, poiché l'accesso alle risorse è effettuato solo in lettura.
+Le principale risorse sono:
+\begin{itemize}
+  \item Linee
+  \item Direzioni
+  \item Fermate
+  \item Autobus
+\end{itemize}
 
+Per ognuna di esse, escluse le linee, è necessario specificare come parametro in query string l'elenco delle risorse correlate.
+Viene fornito di seguito un esempio:
 
+Alla richiesta di una certa collezione di direzioni, il client effettua una chiamata GET al server all'end point \code{http://<server\_address>/directions} con appeso in query string il parametro contenente la lista delle linee di cui si vuole ottenere le direzioni.
+Il parametro sarà della forma: \code{lines=170-766}.
 
-Dopo aver specificato il caso d'uso relativo al servizio web, si proceda con la definizione delle base del progetto: il modulo Application.
+Il server quindi restituirà i dati richiesti in formato JSON che, continuando con l'esempio precedente, avranno la seguente struttura:
+\begin{verbatim}
+[
+  {
+    "id": "1700",
+    "name": "170 Direzione Termini (MA-MB-FS)"
+  },
+  {
+    "id": "1701",
+    "name": "170 Direzione Agricoltura"
+  },
+  ...
+  { 
+    "id": "7660",
+    "name": "766 Direz. Millevoi"
+  },
+  ...
+]
+ \end{verbatim} 
+
+Nel caso non venga fornito alcun parametro nella richiesta, il server fornirà come risposta un errore 400 di sintassi errata.
+
+Per un maggiore approfondimento riguardo l'interfaccia si faccia riferimento all'appendice \ref{apx:API}.\\
+
+Procediamo ora con la descrizione dei vari moduli che compongono questo servizio:
 
 \subsection{Application} % (fold)
 \label{sub:application}

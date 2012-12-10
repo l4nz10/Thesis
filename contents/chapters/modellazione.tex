@@ -23,17 +23,13 @@ UML consente di costruire modelli OO per rappresentare domini di diverso genere.
 Il modello è strutturato secondo un insieme di viste che rappresentano diversi aspetti della cosa modellata, sia a scopo di analisi che di progetto, mantenendo la tracciabilità dei concetti impiegati nelle diverse viste. Oltre che per la modellazione dei sistemi software viene usato per descrivere domini di altri tipi, ad esempio sistemi hardware, sistemi di gestione o strutture organizzative in un'ecosistema specifico. 
 % section uml_ (end)
 
-
-
 \section{Il MDD della rete trasporti pubblici} % (fold)
 \label{sec:il_MDD_della_rete_trasporti_pubblici}
 
-Avendo dunque specificato la struttura e la costruzione del modello di dominio, si procede ora alla realizzazione del modello specifico all'ambiente preso in esame in questa tesi: la rete dei trasporti pubblici urbani.
+Come si è già accennato in precedenza, una rete di trasporti pubblici di notevoli dimensioni comporta una ramificazione dei trasporti attraverso un'agglomerato di linee. L'azienda dei trasporti deve fornire un metodo di consultazione semplice e chiaro così da permettere ad un qualsiasi cittadino di comprendere come funzioni il sistema.
 
-Come si è già accennato in precedenza, una rete di trasporti pubblici di notevoli dimensioni comporta una ramificazione dei trasporti attraverso un'agglomerato di linee, le quali sono a loro volta suddivise in più direzioni per poter definire i percorsi che quella linea copre.
-A sua volta, ogni direzione elenca un numero di fermate in cui è possibile attendere il passaggio dei vari mezzi di trasporto. Infine la rete di trasporti è composta dai mezzi stessi, come gli autobus, ai quali sarà definito un tragitto da percorrere a seconda della direzione a cui sono assegnati.
-\newpage
-Dunque si definisce ora un possibile caso d'uso d'interesse:
+Viene ora descritto un possibile caso d'uso per la consultazione del servizio di trasporti:
+
 \begin{enumerate}
    \item un {\bfseries utente} consulta un'elenco di {\bfseries linee} per scegliere quella d'interesse
    \item l'{\bfseries utente} sceglie una {\bfseries direzione} di preferenza appartenente alla linea selezionata
@@ -96,6 +92,8 @@ Un autobus non possiede un nome di riferimento, ma specifica la la linea e la di
 Inoltre gli autobus posseggono solitamente di un codice identificativo, in modo tale che il sistema interno del servizio dei trasporti possa effettuare una catalogazione dei mezzi di cui dispone. Ai fini dell'utente finale però, questo attributo non risulta di alcuna utilità.\\
 % subsubsection autobus (end)
 
+Ricapitolando, possiamo definire quindi quattro distinte classi:
+
 {\itshape Linea}
 
 {\itshape Direzione}
@@ -104,9 +102,8 @@ Inoltre gli autobus posseggono solitamente di un codice identificativo, in modo 
 
 {\itshape Autobus}
 
+Le quali vengono rappresentate nel diagramma del modello di dominio nel modo seguente:
 
-
-Dunque le classi concettuali del modello di dominio sono le seguenti:
 \vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
