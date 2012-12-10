@@ -50,7 +50,7 @@ L'operazione tuttavia non è un metodo, in quanto l'operazione non definisce un'
 
 Avendo dunque introdotto i concetti e le proprietà del diagramma delle classi di progetto, il prossimo passo è dunque rimodellare il modello di dominio definito nel capitolo precedente in un DCD di elevata fedeltà.
 
-Prendendo dunque come riferimento il modello di dominio, il diagramma delle classi dispone di quattro classificatori principali:
+Prendendo dunque come riferimento il modello di dominio, il diagramma delle classi dispone di quattro classificatori principali:\\
 
 {\itshape Linea}
 
@@ -58,20 +58,19 @@ Prendendo dunque come riferimento il modello di dominio, il diagramma delle clas
 
 {\itshape Fermata}
 
-{\itshape Autobus}
+{\itshape Autobus}\\
 
+Concependo come classi regolari questi quattro oggetti, si prosegue assegnando ad ognuno gli attributi di riferimento e le dipendenze, giungendo ad un diagramma illustrato nella prossima pagina:
 \newpage
-
-Concependo come classi regolari questi quattro oggetti, si prosegue assegnando ad ognuno gli attributi di riferimento e le dipendenze, giungendo ad un diagramma di questo tipo:
-
+\vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=14cm]{contents/images/dcd1}
+\includegraphics{contents/images/dcd1}
 \end{center}
 \caption{Primo diagramma delle classi}
 \label{fig:dcd}
 \end{figure}
-
+\vspace{1cm}
 La classe Linea dispone di un attributo ``nome'' di tipo stringa, ed esso, come nel modello di dominio, assume un ruolo di identificatore nella collezione di oggetti linea che si vuole monitorare.
 a Direzione è costituita da un attributo ``id'' e ``nome'', l'id sarà presente anche nelle classi successive, ed è quello che identificherà univocamente le istanze degli oggetti, assegnando invece al nome un contenuto puramente informativo, data la sua eccessiva lunghezza.
 Nelle classi Fermata e Autobus sono presenti gli attributi ``latitudine'' e ``longitudine'', i quali definiscono la posizione univoca dell'oggetto nello spazio. Ciò permette la locazione di questi elementi durante la fase di posizionamento sulla mappa di visualizzazione.
@@ -82,7 +81,7 @@ Per quanto riguarda le dipendenze, la classe Linea ne specifica una verso Direzi
 
 Questa prima iterazione del diagramma delle classi di progetto non è però soddisfacente ai fini di sviluppo di un'applicazione web lato client, e deve dunque essere migliorato attraverso l'aggiunta di ulteriori classi che si occupino della gestione delle richieste, il prelievo dei dati, la manipolazione e la visualizzazione di questi ultimi attraverso un'interfaccia.
 
-Possiamo dunque introdurre una classe {\itshape Applicazione}, che sarà il cuore del progetto. Questa classe si occupa di gestire tutte le altre classi e mantenerne i riferimenti.
+Possiamo dunque introdurre una classe {\itshape Applicazione}, che sarà la basedia del progetto. Questa classe si occupa di gestire tutte le altre classi e mantenerne i riferimenti.
 L'applicazione, per quanto classe {\itshape madre} dell'intero sistema, non deve assurmersi altre responsabilità, come la gestione dei dati e delle richieste degli utenti, in modo da non caricare troppo il suo margine di compiti.
 
 E' opportuno quindi definire una classe {\itshape Controller}. Il compito dell'entità Controller è la cattura e gestione delle richieste che l'utente pone al sito web. Inoltre si occupa della richiesta al server dei dati di interesse all'utente e della loro manipolazione, in modo che siano pronti per una corretta visualizzazione.
@@ -91,13 +90,15 @@ Proprio per quest'ultimo aspetto vi è il bisogno di creare una classe {\itshape
 \newpage
 Al seguito di queste nuove scelte progettuali, il nuovo diagramma delle classi assume la forma seguente:
 
+\vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=14cm]{contents/images/dcd1}
+\includegraphics[width=13cm]{contents/images/dcd2}
 \end{center}
-\caption{Placeholder}
+\caption{Secondo diagramma delle classi}
 \label{fig:placeholder}
 \end{figure}
+\vspace{1cm}
 
 La classe Applicazione, dovendo mantenere dei riferimenti verso le altre classi, dispone di attributi per associazione verso tutte le altre classi definite nel diagramma. Le associazioni verso le classi Linea, Direzione, Fermata e Autobus saranno 1 a N, essendo quest'ultime collezioni di dati di interesse.
 

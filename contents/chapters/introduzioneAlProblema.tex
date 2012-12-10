@@ -29,21 +29,39 @@ In questo lavoro, viene messo in risalto il servizio che si vuole offrire al cit
 
 E’ d’obbligo chiarire che, nel nostro paese, ogni Azienda adotta un software di gestione centralizzata diverso da un’altra perché diverse sono le esigenze, le strutture, e tante altre cose ancora da città a città. Le varie Aziende non hanno svolto un lavoro comune per arrivare agli stessi risultati in  termini di servizi offerti al cittadino quindi, in alcune città, è possibile visualizzare gli orari di attesa su qualche fermata delle principali linee urbane, in altre questo risultato è ancora lontano ma si è lavorato su feed-back tra i tempi di percorrenza e gli affollamenti delle linee, in altre si sono ottenute entrambe le soluzioni sopra dette, ed in altre ancora si è lontano da  qualsiasi risultato che possa ottimizzare tempi di percorrenza e servizi di informazioni ai cittadini.
 
-In ogni caso molte le Aziende di trasporto si sono dotate di software di gestione centralizzata per offrire un servizio  di informazione agli utenti e lavorano assiduamente per migliorare l’organizzazione di detto servizio in un ottica di ottimizzazione costi-benefici ma i software di cui si sono dotate, anche se contengono molteplici indicazioni: percorsi della linea, orari teorici di transiti agli orari feriali e festivi, ore di punta, di calma e serali, rischiano di fallire gli obiettivi perché di difficile lettura ed interpretazione; ciò senza considerare che forniscono elementi ``teorici" spesso vanificati e concorrono ad introdurre ulteriori elementi di incertezza. Essi devono riguardare i tempi di percorrenza reali, il numero dei passeggeri, la movimentazione alle rispettive fermate - saliti e discesi -, la ciclicità della richiesta di servizio e, più in generale, tutto quanto concorre a determinare orari. In questi casi avere a disposizione dati aggiornati sulla realtà delle situazioni non sono irrazionali richieste, ma può risultare assai utile per dimostrare che a fronte di un indubbio aggiornamento corrispondono analoghi benefici collettivi.
+In ogni caso molte aziende di trasporto si sono dotate di software di gestione centralizzata per offrire un servizio  di informazione agli utenti e lavorano assiduamente per migliorare l’organizzazione di detto servizio in un ottica di ottimizzazione costi-benefici ma i software di cui si sono dotate, anche se contengono molteplici indicazioni: percorsi della linea, orari teorici di transiti agli orari feriali e festivi, ore di punta, di calma e serali, rischiano di fallire gli obiettivi perché di difficile lettura ed interpretazione; ciò senza considerare che forniscono elementi ``teorici" spesso vanificati e concorrono ad introdurre ulteriori elementi di incertezza. Essi devono riguardare i tempi di percorrenza reali, il numero dei passeggeri, la movimentazione alle rispettive fermate - saliti e discesi -, la ciclicità della richiesta di servizio e, più in generale, tutto quanto concorre a determinare orari. In questi casi avere a disposizione dati aggiornati sulla realtà delle situazioni non sono irrazionali richieste, ma può risultare assai utile per dimostrare che a fronte di un indubbio aggiornamento corrispondono analoghi benefici collettivi.
 
-Proprio per la molteplicità delle prestazioni che un sistema integrato di gestione di ricezione, trasmissione messaggi e  informazioni, può offrire deve essere realizzato con attenzione.
+Proprio per la molteplicità delle prestazioni che un sistema integrato di gestione, di ricezione, trasmissione, messaggi e informazioni può offrire deve essere realizzato con attenzione.
 
 La velocità dei flussi viari è facilmente deducibile analizzando i tempi di percorrenza dei bus e non è inutile valutare come gli stessi dati, riferiti ovviamente ai soli tempi di scorrimento del traffico, possano essere inviati anche al gestore dello stesso mantenendo sotto controllo la situazione viaria cittadina. Sarà quindi possibile per la stessa entità utilizzarli e, se nel caso, disporre una diversa temporizzazione dei cicli semaforici dando la necessaria priorità, rispetto alle altre componenti del traffico, a favore del trasporto pubblico.
 Analogamente gli stessi dati potrebbero essere utilizzati per informare la veicolazione sia essa pubblica che privata.
 Quindi dare un servizio di informazione precisa all’utente, oggi, con i potenti mezzi che l’elettronica offre,  è possibile e, soprattutto, si può aggiungere che, il cittadino ha bisogno di sentirsi al centro dell’attenzione, di sentirsi importante, di sentirsi parte integrante delle decisioni.
 
 Un settore di così articolata composizione e difficoltà, non consente di affrontare una gestione centralizzata di un servizio di trasporto, se ad esso non concorrono conoscenze approfondite che difficilmente sono presenti in una singola entità.
-Questo lavoro è stato pensato e creato mettendo il cittadino utente al centro dell’interesse. Quello che si raggiunge come obiettivo finale è la visualizzazione su mappa degli autobus di linea  che ogni utente potrà visualizzare ovunque si trovi utilizzando un dispositivo capace di navigare in rete (smart-phone, tablet, …)
+Questo lavoro è stato pensato e creato mettendo il cittadino utente al centro dell’interesse. Quello che si raggiunge come scopo finale è la visualizzazione su mappa degli autobus di linea  che ogni utente potrà visualizzare ovunque si trovi utilizzando un dispositivo capace di navigare in rete (smart-phone, tablet, …)
 
-Affinché questa applicazione funzioni correttamente serve solo l’accesso ai dati inerenti al monitoraggio del traffico del servizio pubblico. Dati che ogni Azienda possiede. 
+\section{Obiettivo della tesi} % (fold)
+\label{sec:section_name}
 
-È questa un’applicazione che può, quindi, essere utilizzata da ogni cittadino, anche da tutti coloro che non conoscono affatto il mondo dell’informatica.
+Come è stato appena introdotto, l'obiettivo di questa tesi è realizzare dunque un'applicazione web che permetta all'utenza di una grande città la consultazione di un servizio di trasporti pubblici, nel particolare la rete autobus urbana.
+Per fare ciò vi è bisogno di progettare un servizio web che possa gestire gli accessi dell'utenza ed elaborare le informazioni che vengono richieste, per poi poter visualizzare i risultati di interesse all'utente.
 
-Questo elaborato è stato corredato di un’applicazione pratica, essa dimostra la concreta funzionalità e semplicità di consultazione. Per fare ciò sono stati utilizzati i dati già disponibili sul web relativi alla circolazione del servizio pubblico di Roma.
+E' stato preso come riferimento quindi il sistema dei trasporti pubblici romani ma, non potendo attingere a dati primitivi come, ad esempio, le coordinate GPS degli autobus in circolazione od una struttura chiara dell'intera ramificazione delle linee di roma, si è scelto di adottare un sistema di estrazione dei dati direttamente dal sito web che monitora la suddetta rete.
+Altro problema già introdotto nella parte iniziale di questo capitolo risiede nella poca chiarezza della visualizzazione dei dati di interesse all'utente. Attualmente il sito web adibito al monitoraggio delle linee autobus gestisce  un basilare sistema di visualizzazione testuale, offrendo all'utente solamente dei tempi di attesa sui prossimi autobus in arrivo in ogni fermata, proprio come accade quando si attende un autobus in una fermata.
+Disponendo di un servizio avanzato quale internet perché non fornire invece una visione più globale dell'intera rete dei trasporti? Sarebbe possibile ad esempio poter mostrare all'utente {\itshape tutti} gli autobus in circolazione su una direzione, visualizzando dove essi si trovano in ogni momento.
+Su questo principio si basa il fulcro di questo servizio, e al fine di poter realizzare un sistema efficiente, vi è quindi bisogno della risoluzione di due problemi principali:
+
+\begin{enumerate}
+    \item estrarre i dati necessari dal sistema dei trasporti pubblici romani
+    \item offrire una visualizzazione opportuna dei dati ricavati
+\end{enumerate}
+
+Per far fronte a queste problematiche viene dunque progettata una struttura server-client in cui il lato client sarà adibito alla richiesta dei dati di interesse e alla loro corretta visualizzazione, mentre il lato server si occuperà di servire le richieste del client ricavando i dati dal sistema web dei trasporti pubblici romani.
+
+Questi aspetti sono stati realizzati attraverso una collaborazione tra due laureandi, lavorando comunemente per la risoluzione delle problematiche di estrazione e di visualizzazione.
+
+Questo elaborato si focalizza sulla gestione lato client dei dati di interesse, descrivendo i metodi di richiesta e di organizzazione dei dati, come essi vengano visualizzati sulla mappa e la struttura dell'interfaccia web.
+
+% section section_name (end)
 
 \newpage

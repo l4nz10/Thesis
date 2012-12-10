@@ -23,109 +23,7 @@ UML consente di costruire modelli OO per rappresentare domini di diverso genere.
 Il modello è strutturato secondo un insieme di viste che rappresentano diversi aspetti della cosa modellata, sia a scopo di analisi che di progetto, mantenendo la tracciabilità dei concetti impiegati nelle diverse viste. Oltre che per la modellazione dei sistemi software viene usato per descrivere domini di altri tipi, ad esempio sistemi hardware, sistemi di gestione o strutture organizzative in un'ecosistema specifico. 
 % section uml_ (end)
 
-\newpage
 
-\section{Il modello di dominio} % (fold)
-\label{sec:il_modello_di_dominio}
-
-Il modello di dominio è la rappresentazione più importante e classica impiegata nell’analisi orientata agli oggetti. Esso illustra i concetti significativi di un dominio. Può fungere da sorgente di inspirazione per la progettazione di alcuni oggetti software.
-La notazione di base è banale, ma per ottenere un modello utile è necessario seguire delle linee guida di modellazione molto sottili.
-L’identificazione di un ricco insieme di classi concettuali è al centro dell’analisi orientata agli oggetti. Se viene effettuata con perizia e con un breve investimento di tempo solitamente ripaga nella progettazione.
-
-Il passo essenziale dell’analisi orientata agli oggetti è la decomposizione di un dominio in concetti o oggetti significativi. 
-Un modello di dominio è una rappresentazione visuale di classi concettuali o di oggetti del mondo reale di un dominio e non di oggetti software, è illustrato con un insieme di diagrammi delle classi in cui sono definite operazioni. Esso fornisce un punto di vista concettuale e mostra: 
-
-\begin{itemize}
-    \item Oggetti di dominio o classi concettuali
-    \item Associazioni tra le classi concettuali
-    \item Attributi di classi concettuali
-\end{itemize}
-
-Il modello mostra un’astrazione delle classi concettuali, poiché vi sono molte altre informazioni che si potrebbero comunicare in merito alle classi prese in esame. Le informazioni che esso rappresenta possono essere espresse, in alternativa, come semplice testo, ma l’uso di un linguaggio visuale permette di capire più facilmente i termini e soprattutto le relazioni tra di esse, poichè il cervello umano è bravo a comprendere elementi illustrati graficamente e linee di connessione.
-Pertanto il modello di dominio è un dizionario visuale delle astrazioni significative, della terminologia del dominio e del contenuto informativo del sistema in esame.
-
-Dunque ricapitolando, un modello di dominio è relativo a un punto di vista puramente concettuale e pertanto descrive oggetti del mondo reale e non da un punto di vista software.
-Tuttavia a questo termine sono stati dati altri significati, come per indicare lo strato degli oggetti sodtware di un dominio, ovvero lo strato degli oggetti software sotto lo strato di presentazione o interfaccia.
-La definizione corretta non esiste, o meglio ogni definizione è a suo modo corretta, a seconda di ciò che si vuole rappresentare. Può capitare dunque di fare confusione quando si vuol parlare  di modello di dominio, dunque si indicherà come strato di dominio il secondo significato del modello, quello orientato agli oggetti software, come avviene nella maggior parte dei casi.
-
-\subsection{Classi concettuali} % (fold)
-\label{sub:classi_concettuali}
-
-% subsection subsection_name (end)
-Una classe concettuale, secondo una definizione informale, è un’idea, una cosa o un’oggetto. Più formalmente una classe concettuale può essere considerata in termini del suo simbolo, della sua intensione ed estensione:
-\begin{itemize}
-    \item Simbolo: parole o immagini che rappresentano una classe concettuale
-    \item Intensione: la definizione di una classe concettuale
-    \item Estensione: l'insieme di esempi a cui la classe concettuale si applica
-\end{itemize}
-Ad esempio nel caso d’interesse di questo trattato, si può assegnare un nome ad una classe concettuale in base al simbolo Fermata.
-L’intensione di una fermata può affermare che essa rappresenta il luogo ove è collocato un punto per la salita e discesa dei passeggeri su un autobus, e pertanto avrà un nome che la distingue nel percorso e una posizione che ne permette la locazione.
-L’estensione di Fermata sono tutti gli esempi di fermate. In altre parole, l’insieme di tutti i punti di fermata lungo un percorso preso in esame.
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics{contents/images/esempio_fermata}
-\end{center}
-\caption{Classe concettuale di Fermata}
-\label{fig:fermata}
-\end{figure}
-% section il_modello_di_dominio (end)
-
-\newpage
-
-\subsection{Perché creare il modello} % (fold)
-\label{sub:perch_creare_il_modello}
-
-Il processo di concepimento del modello di dominio  di un caso di studio è un’attività largamente utilizzata nel mondo dello sviluppo software, questo perché permette di ottenere un salto rappresentazionale basso nella modellazione orientata agli oggetti.
-Questo è un’idea fondamentale nel paradigma OO: utilizzare nomi di classi software nello strato del dominio ispirati ai nomi del modello di dominio, con oggetti dotati di informazioni e responsabilità aventi attinenza con il dominio.
-Questo processo permette una trasformazione graduale del caso di studio, riplasmando gli oggetti del mondo reale in entità via via sempre più astratte ed adatte all’ambiente di programmazione.
-Ciò comporta un risparmio in termini di tempo e denaro, rendendo l’attività di sviluppo software più facile ed efficiente.
-% subsection perch_creare_il_modello (end)
-
-\newpage
-
-\subsection{Come creare il modello} % (fold)
-\label{sub:come_creare_il_modello}
-
-Nella creazione di un modello di dominio vengono effettuati tre passi principali: identificare le classi concettuali; disegnarle all’interno di un diagramma UML; aggiungere dunque le relative associazioni ed attributi.
-
-Per svolgere il primo passo esistono varie strategie. Quella utilizzata in questo elaborato è una strategia semplice ma efficace: descrivendo il processo di funzionamento dell’ecosistema preso in esame, possono essere distinti elementi e termini chiave che diverranno candidati a possibili classi concettuali.
-
-Si ha però bisogno di fare particolare attenzione nello svolgimento di questo approccio: in quanto il suo punto debole è l’imprecisione del linguaggio naturale. Ad esempio un possibile caso di ambiguità risiede nell’avere più locuzioni nominali che possono rappresentare la stessa classe concettuale o attributo.
-% subsection come_creare_il_modello (end)
-
-\subsubsection{Scelta delle classi} % (fold)
-\label{ssub:scelta_delle_classi}
-
-Nella scelta dei nomi delle classi concettuali è sempre preferibile utilizzare i nomi esistenti nel territorio, cercando di specificarne il più possibile il suo ruolo, così da facilitare la comprensione dellpambiente in fase di progetto. Vengono inoltre escluse tutte le caratteristiche irrilevanti o non essenziali, oltre che ovviamente evitare di aggiungere elementi che non esistono nell’ambiente di studio, per manentere il modello il più snello ed essenziale possibile.
-
-Un errore comune nella scelta delle classi è quello di concepire una potenziale classe come attributo di un’altra. La regola utilizzata per ovviare a questo problema è quella di pensare agli elementi nel mondo reale: se esse non vengono immediatamente distinte come semplici numeri o descrizioni, allora  non rappresentano degli attributi ma probabilmente delle classi concettuali.
-
-Durante la scelta delle classi, è utile trovare e mostrare associazioni necessarie per soddisfare i requisiti informativi degli scenari correnti in corso di sviluppo, nonché quelle che contribuiscono alla comprensione del dominio.
-Un'associazione è quindi definita come una relazione tra classi, la quale indica una connessione significativa e interessante.
-
-Le associazioni che è utile mostrare sono solitamente quelle che implicano la conoscenza di una relazione che deve essere memorizzata per un certo periodo che, a seconda del contesto, potrebbe essere di millisecondi o addirittura anni.
-Poiché il modello di dominio descrive un punto di vista concettuale, queste affermazioni sulla necessità di ricordare fanno riferimento ad una necessità nel mondo reale, e non nell'ambiente di rappresentazione software, anche se durante l'implementazione ci si imbatterà a dover soddisfare molte necessità simili.
-E' sempre un bene però evitare di inserire troppe associazioni in un modello di dominio perché, come detto in precedenza, avere un modello che sia semplice e snello facilita la comprensione in fase di sviluppo e garantisce una concezione più veloce ed intuitiva. Dunque è sempre opportuno decidere con attenzione e parsimonia le associazioni, concentrandosi solamente su ciò che si deve memorizzare.
-% subsubsection scelta_delle_classi (end)
-
-\subsection{Associazioni} % (fold)
-\label{sub:associazioni}
-
-Nel diagramma, un'associazione è rappresentata come una linea che collega le classi partecipanti alla relazione. Le estremità di un'associazione possono contenere un'espressione di molteplicità, la quale indica le relazioni numeriche tra le istanze delle classi.
-Ogni associazione è per natura bidirezionale, nel senso che è possibile una navigazione logica dalle istanze di una delle due classi a quelle dell'altra, e viceversa. Ma questa navigazione è puramente astratta, essa non è un'affermazione su connessioni tra entità software.
-La molteplicità dell'associazione definisce quante istanze di una classe possono essere associate ad un'istanza di un'altra classe relazionata con la prima.
-Un esempio calzante in questo trattato è quello dell'associazione tra Direzione e Fermata: ogni direzione di una linea di trasporti è composta da una discreta quantità di fermate, mentre una fermata può appartenere ad una o più direzioni, dunque l'associazione tra queste due classi è N a N.
-
-Infine, si assegna ad ogni associazione un nome rappresentato come una locuzione verbale, così da facilitare la comprensione del ruolo della relazione tra le due classi. Si ricordi che un'associazione è leggibile in entrambe le direzioni, per cui anche se il nome induce alla lettura in un senso unico, esso può essere comunque ``ribaltato'' per garantirne la lettura nell'altro verso.
-% subsection associazioni (end)
-
-\subsection{Attributi} % (fold)
-\label{sub:attributi_mod}
-
-Per quanto riguarda gli attributi, essi definiscono un valore logico, in altre parole un dato, di un oggetto. E' utile identificare gli attributi delle classi concettuali, cosi da soddisfare i contenuti informativi per gli scenari correnti nel corso dello sviluppo.
-Gli attributi vengono scelti attraverso i casi d'uso, quando i requisiti suggeriscono una necessità di ricordare informazioni. Nel diagramma, essi sono collocati all'interno delle classi concettuali a cui fanno riferimento rappresentati attraverso il loro nome.
-% subsection attributi (end)
 
 \section{Il MDD della rete trasporti pubblici} % (fold)
 \label{sec:il_MDD_della_rete_trasporti_pubblici}
@@ -147,6 +45,57 @@ Dunque si definisce ora un possibile caso d'uso d'interesse:
 Dall'elenco dell'analisi dei nomi e delle locuzioni nominali è possibile generare un elenco delle classi concettuali candidate per il dominio. Dal momento che si tratta di un sistema di trasporti pubblici, si pone l'attenzione prima di tutto sulle categorie che enfatizzano oggetti fisici e le relazioni tra di essi.
 Come già visto da alcuni esempi precedenti, si possono individuare alcune classi principali di rilievo:
 
+\subsubsection{Linea} % (fold)
+\label{ssub:linea}
+In una rete di trasporti pubblici, una linea specifica una direzione (o molteplici direzioni) con il quale l'azienda dei trasporti desidera ricoprire un settore di città, potendo offrire ai cittadini che risiedono in quella zona un servizio di trasporto. Una linea è frequentemente rappresentata da un numero o un codice. 
+
+Si faccia attenzione a non confondere una linea con una direzione: al contrario di quest'ultima, la linea non è strutturata su un ben preciso percorso e su una serie di snodi stradali, ma raffigura un ramo della rete dei trasporti che ricopre una porzione della città in cui l'azienda è situata.
+
+L'azienda dei trasporti sarà dunque composta da numerose linee, che attraverso le loro ramificazione portano a ricoprire tutta la metropoli, garantendo un servizio equo per tutti i cittadini.
+
+Attraverso le direzioni le linee tendono a ricongiungersi ad uno o più punti di snodo centrali, permettendo, a chi ha bisogno di percorrere lunghi tratti, la possibilità di cambiare linea e raggiungere dunque altri settori differenti di città.
+% subsubsection linea (end)
+
+\subsubsection{Direzione} % (fold)
+\label{ssub:direzione}
+Una direzione rappresenta un preciso percorso offerto da una linea, il percorso si snoda attraverso un tragitto specifico tra le strade della città.
+
+Una direzione è specificata anche dal verso di percorrenza, dunque anche se una linea offre un solo percorso, tipicamente essa dispone di due direzioni che ne definiscono il tragitto di andata e di ritorno.
+
+In ogni direzione vengono specificati dei punti di sosta, situati in punti di interesse o in zone particolarmente visitate da cittadini e turisti. In ogni punto di sosta risiede una fermata, o stazione, in cui è possibile richiedere ai mezzi pubblici la sosta per la  salita e la discesa dei passeggeri.
+
+Nei punti di inizio e di fine di una direzione è collocata la fermata di capolinea. Due direzioni aventi lo stesso percorso ma con versi di percorrenza dfferenti hanno in comune le stesse fermate di capolinea, permettendo agli autobus che concludono una direzione di invertire rotta e procedere nella direzione inversa.
+
+In una linea può però capitare che anche avendo solo due direzioni, queste due non condividino lo stesso percorso. In questi casi le due direzioni passano attraverso vie differenti o solo parzialmente differenti, ricongiungendosi infine nella stazione di capolinea.
+
+Ogni direzione è rappresentata attraverso un nome o un codice, o in alcuni casi, dalla combinazione dei due. Il nome tipicamente si riferisce al verso di percorrenza del tragitto, specificando verso quale capolinea si sta viaggiando, ad esempio ``Direzione Termini''. Il codice invece permette di comprendere a quale linea appartiene la direzione di cui si sta usufruendo, e di solito viene affiancato al suo nome, come ad esempio ``170 Direzione Laurentina''.
+% subsubsection direzione (end)
+
+\subsubsection{Fermata} % (fold)
+\label{ssub:fermata}
+Le fermate rappresentano una struttura fisica in cui è possibile attendere l'arrivo di un autobus. Esse svolgono il compito di dividere ogni direzione in varie sotto-zone, offrendo dunque dei punti di riferimento ai passeggeri che vogliono raggiungere un particolare luogo della città.
+
+Una fermata non è obbligatoriamente esclusiva di una direzione, ma può appartenere a due o più direzioni contemporaneamente: molte fermate infatti sono situate su incroci o collegamenti tra diverse direzioni, permettendo ai passeggeri di effettuare delle coincidenze nel caso vogliano raggiungere luoghi coperti da una linea differente da quella su cui stanno transitando.
+
+Le fermate si dividono tra fermate di transito e stazioni di capolinea. Le stazioni di capolinea sono situate alla fine (e inizio) di una direzione, e tipicamente esse sono condivise da molteplici direzioni, in modo tale da creare delle coincidenze tra linee differenti. Un tipico esempio è la stazione di termini, dove quasi tutte le direzioni hanno inizio o fine.
+
+Per fare in modo che il passeggero possa distinguere e memorizzare le fermate che intende sfruttare, esse vengono definite attraverso un nome, che di norma è ispirato ad luogo in cui la fermata è situata, come una piazza o un viale, oppure si riferisce ad un famoso monumento, edificio od una struttura pubblica molto frequentata da cittadini e/o turisti, la quale è situata nelle vicinanze del punto di sosta. Alcuni esempi possono essere la fermata di ``Termini'' o di ``Basilica San Paolo''. 
+% subsubsection fermata (end)
+
+\subsubsection{Autobus} % (fold)
+\label{ssub:autobus}
+Gli autobus sono alla base di un qualsiasi servizio di trasporti pubblici di città, e rappresentano i mezzi con i quali i cittadini possono comodamente spostarsi da un punto all'altro.
+
+Gli autobus percorrono solo i tragitti definiti dalle direzioni, fermandosi non appena viene richiesto il bisogno di salita o di discesa di passeggeri. La salita/discesa dei passeggeri può avvenire solamente nei punti di fermata e in nessun altro posto, per garantire una regolamentazione dei trasporti ed una maggiore efficienza del servizio.
+
+In ogni azienda di trasporti pubblici per ogni linea vengono inizialmente assegnati un certo numero di autobus, i quali non dovranno fare altro che garantire una copertura di trasporti nella zona delimitata da quella linea. Gli autobus vengono ulteriormente divisi per direzioni, in modo tale da permettere al passeggero di comprendere in quale verso l'autobus intende percorrere il tragitto.
+
+Una volta giunto al capolinea l'autobus procede alla discesa di tutti i passeggeri e prosegue verso il magazzino di raccolta degli autobus, se conclude la sua corsa. In caso l'autobus debba ancora offrire il servizio di trasporto esso viene assegnato alla direzione opposta a quella appena conclusa, ripercorrendo il tragitto nel verso opposto.
+
+Un autobus non possiede un nome di riferimento, ma specifica la la linea e la direzione che sta percorrendo, in modo tale che i cittadini possano sapere in quale parte della città il mezzo li può condurre.
+Inoltre gli autobus posseggono solitamente di un codice identificativo, in modo tale che il sistema interno del servizio dei trasporti possa effettuare una catalogazione dei mezzi di cui dispone. Ai fini dell'utente finale però, questo attributo non risulta di alcuna utilità.\\
+% subsubsection autobus (end)
+
 {\itshape Linea}
 
 {\itshape Direzione}
@@ -155,12 +104,13 @@ Come già visto da alcuni esempi precedenti, si possono individuare alcune class
 
 {\itshape Autobus}
 
-In questo caso d'uso potrebbe essere preso in considerazione anche l'elemento Utente, ma al fine di questo progetto - il quale mira esclusivamente al monitoraggio dei trasporti pubblici e non ai servizi offerti al pubblico - questa classe concettuale non è di rilevanza, e verrà perciò scartata.
-Dunque le classi concettuali del modello di dominio sono le seguenti:
 
+
+Dunque le classi concettuali del modello di dominio sono le seguenti:
+\vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{contents/images/classi_concettuali}
+\includegraphics[width=12cm]{contents/images/classi_concettuali}
 \end{center}
 \caption{Classi concettuali}
 \label{fig:classes}
@@ -179,15 +129,15 @@ Proseguendo, si può notare come a sua volta ogni direzione sia composta da un c
 Concludendo con l'ultima classe, un autobus è associato ad'una direzione univoca e, durante il suo tragitto, si ferma in ogni fermata definita dalla direzione. In una direzione transitano più autobus e, allo stesso modo, in una fermata possono fermare più autobus. Le relazioni tra Autobus e Direzione e Autobus e Fermata saranno definite rispettivamente dall'associazione ``Appartiene'' di molteplicità N a 1 e dall'associazione `Collocato su'' di molteplicità N a 1.
 \newpage
 Avendo quindi specificato tutte le associazioni essenziali, il diagramma del modello di dominio assume questa forma:
-
+\vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{contents/images/modelloDominio}
+\includegraphics[width=12cm]{contents/images/modelloDominio}
 \end{center}
 \caption{Classi concettuali}
 \label{fig:domain_model}
 \end{figure}
-
+\vspace{1cm}
 La rappresentazione finale del modello di dominio di questo caso di studio è un diagramma molto semplice e snello, racchiudendo solamente i dettagli essenziali per la progettazione del servizio descritto in questo elaborato.
 Come già spiegato in precedenza, il suo scopo non è descrivere in maniera esaustiva il comportamento di un servizio di trasporti urbani, ma si limita a definirne una concezione semplificata e, allo stesso tempo, sufficientemente completa per poter progettare un servizio efficiente.
 

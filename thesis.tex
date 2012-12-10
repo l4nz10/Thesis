@@ -1,8 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Academic LaTeX Thesis Template                                   %
-% Author: Alessandro Manfredi <a.n0on3@gmail.com> - www.n0on3.net  %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % Settings
 \input{settings}
 
@@ -14,16 +9,16 @@
 \cleardoublepage
 
 % Dedication
-\input{contents/other/dedication}
-\cleardoublepage
+%\input{contents/other/dedication}
+%\cleardoublepage
 
 % Abstract
-\chapter*{Abstract}{\input{contents/other/abstract}}
-\thispagestyle{empty}
-\cleardoublepage
+%\chapter*{Abstract}{\input{contents/other/abstract}}
+%\thispagestyle{empty}
+%\cleardoublepage
 
 % Acknowledgements
-\chapter*{Acknowledgements}{\input{contents/other/acknowledgements}}
+\chapter*{Ringraziamenti}{\input{contents/other/acknowledgements}}
 \thispagestyle{empty}
 \cleardoublepage
 
@@ -34,10 +29,10 @@
 \pagestyle{headings}
 
 % ToC, LoF, LoT
-\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\contentsname}{Tabella dei contenuti}
 \tableofcontents
 \listoffigures
-\listoftables
+%\listoftables
 \cleardoublepage
 
 % Start page numbering
@@ -45,8 +40,8 @@
 \setcounter{page}{1}
 \pagenumbering{arabic}
 
-\chapter*{Introduction}
-\chaptermark{Introduction}
+\chapter*{Introduzione}
+\chaptermark{Introduzione}
 {\input{contents/other/introduction}}
 \addcontentsline{toc}{chapter}{Introduction}
 
@@ -69,42 +64,46 @@
 \chapter{Realizzazione}\label{cha:realizzazione}
 \input{contents/chapters/realizzazione}
 
-% chapter realizzazione (end)
+\chapter{Esempi d'uso e dimostrazioni}\label{cha:dimostrazioni}
+\input{contents/chapters/dimostrazioni}
 
-% chapter progettazione (end)
+\chapter{Conclusioni e sviluppi futuri}\label{cha:conclusioni}
+\input{contents/chapters/conclusioni}
+
+% chapter conclusioni (end)
 % ...other chapters here
 
-\chapter{Examples}\label{chapter:examples}
-\input{contents/chapters/chapter-howto}
+%\chapter{Examples}\label{chapter:examples}
+%\input{contents/chapters/chapter-howto}
 
 % Starts roman page numbering
-\newpage
-\setcounter{page}{1}
-\pagenumbering{roman}
+%\newpage
+%\setcounter{page}{1}
+%\pagenumbering{roman}
 
 % Appendixes
-\appendix
-\chapter{Appendix A Title}\input{contents/appendixes/appendix_a}
-\chapter{Appendix B Title}\input{contents/appendixes/appendix_b}
+%\appendix
+%\chapter{Appendix A Title}\input{contents/appendixes/appendix_a}
+%\chapter{Appendix B Title}\input{contents/appendixes/appendix_b}
 
 % Acronyms and Glossary
-\newpage
-\glsaddall
-\renewcommand{\glsgroupskip}{}
-\printglossary[type=\acronymtype,style=long,title=Table of Acronyms]
+%\newpage
+%\glsaddall
+%\renewcommand{\glsgroupskip}{}
+%\printglossary[type=\acronymtype,style=long,title=Table of Acronyms]
 
-\newpage
-\printglossary[style=altlist,title=Glossary]
+%\newpage
+%\printglossary[style=altlist,title=Glossary]
 
 % Bibliography
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliography}
 % Uncomment the following line if you want all of the bib entries to be displayed
-%\nocite{*}
+\nocite{*}
 \bibliographystyle{\mybibstyle}
 \footnotesize{
  \bibliography{contents/other/references_url.bib}
-}
+%}
 
 \end{document} 

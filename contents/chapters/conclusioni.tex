@@ -1,0 +1,15 @@
+Alla conclusione di questo elaborato può essere affermato di aver risolto il requisito principale dello sviluppo di questo servizio: l'applicazione web visualizza in modo opportuno tutte le direzioni richieste dall'utente, offrendo una corretta rappresentazione delle stazioni lungo una o più linee prescelte.\\
+
+Il servizio soddisfa anche i requisiti di visualizzazione degli autobus in transito lungo la direzione, rendendo noto all'utente a che punto del tragitto essi si trovino. Grazie all'intregazione di una funzione temporizzata, è inoltre possibile ora l'aggiornamento della situazione degli autobus in modo automatico, aspetto completamente assente nel sito web predefinito della rete di trasporti di Roma.\\
+
+Un'altro traguardo raggiunto riguarda la corretta visualizzazione dell'interfaccia web su diverse piattaforme, quali smartphone, tablet e computer: l'interfaccia web si adatta a piccoli schermi assumendo un'impostazione verticali, mentre nel caso di visualizzazione su schermi widescreen essa viene automaticamente impostata ad una rappresentazione orizzontale permettendo di avere sotto controllo tutte le sezioni dell'applicazione web.
+
+\newpage
+
+\subsubsection{Sviluppi futuri} % (fold)
+\label{ssub:sviluppi_futuri}
+
+Allo stato attuale l'applicazione permette di mostrare l'ubicazione delle fermate e degli autobus richiesti dall'utente, ma non fornisce la possibilità di notificare la posizione in cui egli si trova. Il servizio potrebbe essere quindi ulteriormente migliorato tramite l'implementazione dei metodi di geolocalizzazione offerti da HTML5, in modo tale da poter suggerire all'utente le stazioni a lui più vicine effettuando un calcolo tra la sua posizione e le coordinate delle fermate appartenenti alle direzioni di preferenza.\\
+
+Un altro aspetto che può essere approfondito riguarda l'implementazione delle WebSockets, sempre offerte da HTML5, per la realizzazione di una comunicazione bidirezionale tra server e client. Al momento l'aggiornamento automatico è permesso tramite una richiesta temporizzata di nuovi dati al server, il quale può comportare un eccessivo numero di richieste che il server deve gestire nel caso l'applicazione dovesse servire un bacino d'utenza molto ampio. Attraverso le WebSockets il client sarebbe in grado di inviare solamente la prima volta le preferenze dell'utente al server, ricevendo successivamente in maniera completamente asincrona dati sempre aggiornati riguardo l'ubicazione degli autobus.
+% subsubsection sviluppi_futuri (end)

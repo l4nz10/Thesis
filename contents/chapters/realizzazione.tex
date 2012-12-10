@@ -4,10 +4,10 @@
 Una volta appreso JavaScript si nota come questo linguaggio di programmazione abbia oltre ai suoi pregi anche alcuni punti deboli.
 Nativamente JavaScript non fornisce alcun sistema di modularizzazione, si cerca quindi di rendere modulare il codice attraverso le seguenti tecniche: 
 \begin{itemize}
-    \item Il codice viene definito attraverso funzioni le quali sono richiamate immediatamente dopo la loro dichiarazione.
-    \item I riferimenti dalle dipendenze sono fatti attraverso variabili globali le quali vengono caricate in ambiente HTML tramite appositi tag script.
-    \item Le dipendenze sono dichiarate in modo debole: il programmatore ha bisogno di sapere l'ordine esatto delle dipendenze. Ad esempio, per definire una classe Direzione che si riferisca ad una Fermata, la classe Fermata deve essere definita prima di Direzione
-    \item Il caricamento degli script lato client può diventare in certi casi molto lento e deve essere ottimizzato
+  \item Il codice viene definito attraverso funzioni le quali sono richiamate immediatamente dopo la loro dichiarazione.
+  \item I riferimenti dalle dipendenze sono fatti attraverso variabili globali le quali vengono caricate in ambiente HTML tramite appositi tag script.
+  \item Le dipendenze sono dichiarate in modo debole: il programmatore ha bisogno di sapere l'ordine esatto delle dipendenze. Ad esempio, per definire una classe Direzione che si riferisca ad una Fermata, la classe Fermata deve essere definita prima di Direzione
+  \item Il caricamento degli script lato client può diventare in certi casi molto lento e deve essere ottimizzato
 \end{itemize}
 
 Tutto ciò può diventare difficoltoso in caso di progetti complessi, in modo particolare quando gli script cominciano ad avere molte dipendenze, le quali tendono a sovrapporsi e nidificarsi. Inoltre la definizione manuale dei tag script non è scalabile, e non offre la possibilità di caricare gli script su richiesta.
@@ -47,21 +47,41 @@ Avendo definito tutti gli strumenti di sviluppo, si prosegue ora alla creazione 
 Il funzionamento base di questo servizio si basa su questo elenco di passaggi:
 
 \begin{enumerate}
-    \item l'utente accede al sito web per la consultazione dei trasporti pubblici
-    \item il client richiede al server le linee autobus che sono monitorate dal servizio
-    \item il client carica le informazioni delle linee e le visualizza all'utente
-    \item l'utente seleziona una o più linee di sua preferenza, e procede con la visualizzazione delle direzioni
-    \item il client richiede al server le direzioni di cui ha bisogno, specificando le linee selezionate
-    \item il client carica le informazioni delle direzioni e le visualizza all'utente
-    \item l'utente seleziona una o più direzioni che vuole consultare, e procede alla loro visualizzazione sulla mappa
-    \item il client richiede al server le fermate delle direzioni di cui ha bisogno, specificando le direzioni
-    \item il client carica le informazioni delle fermate e le visualizza all'utente su una mappa
-    \item il client richiede al server gli autobus in circolazione sulle direzioni di cui ha bisogno, specificando le direzioni
-    \item il client carica le informazioni degli autobus e li visualizza all'utente su una mappa
+  \item l'utente accede al sito web per la consultazione dei trasporti pubblici
+  \item il client richiede al server le linee autobus che sono monitorate dal servizio
+  \item il client carica le informazioni delle linee e le visualizza all'utente
+  \item l'utente seleziona una o più linee di sua preferenza, e procede con la visualizzazione delle direzioni
+  \item il client richiede al server le direzioni di cui ha bisogno, specificando le linee selezionate
+  \item il client carica le informazioni delle direzioni e le visualizza all'utente
+  \item l'utente seleziona una o più direzioni che vuole consultare, e procede alla loro visualizzazione sulla mappa
+  \item il client richiede al server le fermate delle direzioni di cui ha bisogno, specificando le direzioni
+  \item il client carica le informazioni delle fermate e le visualizza all'utente su una mappa
+  \item il client richiede al server gli autobus in circolazione sulle direzioni di cui ha bisogno, specificando le direzioni
+  \item il client carica le informazioni degli autobus e li visualizza all'utente su una mappa
 \end{enumerate}
 \newpage
 
 I requisiti progettuali imposti all'inizio della progettazione richiedono che l'esperienza utente non sia limitata ad uno scorrimento sequenziale di questi punti dal numero 1 all'11, ma possa anche iniziare da punti successivi al primo, attraverso l'inserimento di un url che passi parametri correttamente interpretabili dal client.
+
+Ma come vengono resi disponibili i dati? Attraverso la prossima sezione verrà descritto il comportamento del lato server, come esso riesce ad estrarre i dati e come possa rispedirli al client.
+
+
+\subsection{Come vengono resi disponibili i dati} % (fold)
+\label{sub:come_vengono_resi_disponibili_i_dati}
+
+% subsection come_vengono_resi_disponibili_i_dati (end)
+Ogni volta che l'utente seleziona un elemento e preme il pulsante di conferma, l'applicazione invia una richiesta AJAX al server, il quale si occupa di fornire i dati richiesti. Per fare ciò il server effettuerà una ricerca all'interno del sito web dei trasporti pubblici romani al fine di ricavare i dati necessari. Ad esempio, nel caso venga selezionata una linea, il client invia una richiesta AJAX al server incorporando l'identificatore della linea selezionata. Il server, ricevuto l'identificatore, lo utilizza per estrapolare la linea scelta nel suo database interno. Una volta ottenuta la linea, il server procede a controllare se quella linea ha già in memoria le direzioni che si vogliono visualizzare e, in caso negativo, effettua una ricerca attraverso il sito web dei trasporti pubblici romani, al fine di estrapolare tutte le direzioni fornite da quella linea.
+Per fare ciò il server un metodo di parsing del documento HTML, sapendo in quali sezioni sono ubicati i dati di cui ha bisogno, in modo tale da estrarli e manipolarli in maniera opportuna.
+Non appena questo processo viene completato, il server crea degli oggetti Direzione contenenti le informazioni estratte in precedenza, e ne crea un riferimento con la linea selezionata. A questo punto il server converte gli oggetti Direzione in formato JSON e procede a spedire al client i dati elaborati, includendoli nella risposta.
+
+Ora che è stata conclusa la breve descrizione del procedimento di estrazione dei dati, specifichiamo meglio come il client riesca a richiedere al server in modo corretto ciò di cui ha bisogno:
+
+\subsection{Interfaccia client-server} % (fold)
+\label{sub:interfaccia_client_server}
+
+Come descritto nel capitolo architetturale il sistema fa uso di un'interfaccia di tipo REST \ref{sec:direttive_rest}
+
+
 
 Dopo aver specificato il caso d'uso relativo al servizio web, si proceda con la definizione delle base del progetto: il modulo Application.
 
@@ -84,24 +104,22 @@ Avendo dunque definito la struttura base della nostra applicazione, si proceda c
 Seguendo le specifiche del diagramma delle classi di progetto definite nel capitolo \ref{cha:progettazione}, vi è il bisogno di definire quattro modelli: Linea, Direzione, Fermata e Autobus.
 
 Come esempio dimostrativo, verrà mostrata la sintassi di definizione del modello Direzione:
-
-\begin{lstlisting}
+{\small
+\begin{verbatim}
 var Model = require('core/Model');
-
 var Direction = Model.extend({
-    defaults: {
-        id: "",
-        name: "",
-        checked: false,
-        },
-    changeChecked: function() {
-        this.checked = !this.checked;
-    }
+  defaults: {
+    id: "",
+    name: "",
+    checked: false,
+    },
+  changeChecked: function() {
+    this.checked = !this.checked;
+  }
 });
-
 module.exports = Direction;
-\end{lstlisting}
-
+\end{verbatim}
+}
 Innanzitutto vieni importato il modulo Model, il quale mette a disposizione tutte le funzionalità base del modulo Model di Backbone.
 Segue dunque la definizione del modello Direction estendendo con le opportune proprietà/metodi la classe base.
 L'hash \code{defaults} permette di specificare gli attributi di base che ogni modello deve contenere. Quando viene creata un'istanza del modello, se uno qualsiasi degli attributi contenuti all'interno di \code{defaults} non viene specificato, esso sarà impostato al suo valore di default.
@@ -110,7 +128,6 @@ Per il modello Direzione, vengono specificati le proprietà definite come attrib
 Una volta definito il modello si definisce la sua esportazione che ne garantisce un riferimento per gli altri moduli.
 
 Una volta terminata la costruzione della struttura portante dell'applicazione, si può proseguire alla specifica del fulcro dell'applicazione web: il modulo Router.
-\newpage
 
 \subsection{Router} % (fold)
 \label{sub:router}
@@ -121,30 +138,27 @@ Attraverso una strutturazione in sezioni ben definita nelle rotte, il router pu�
 Inoltre attraverso il router è possibile lasciare una traccia nella cronologia di navigazione, consentendo in questo modo all'utente di poter scorrere attraverso i passaggi effettuati all'interno del sito web.
 
 La struttura principale del router è definita nel codice seguente. Per evitare un eccessiva lunghezza di codice sono stati omessi i contenuti delle funzioni.
-
-\begin{lstlisting}
+{\small
+\begin{verbatim}
 var Router = require('core/Router');
-
 var application = require('Application');
 ApplicationRouter = Router.extend({
-    routes: {
-        '': 'home'
-        'lines': 'loadLines'
-        'lines/:lines' : 'loadLines',
+  routes: {
+    '': 'home'
+    'lines': 'loadLines'
+    'lines/:lines' : 'loadLines',
 
-        'lines/:lines/directions' : 'loadDirections',
-        'lines/:lines/directions/:directions' : 'loadDirections',
+    'lines/:lines/directions' : 'loadDirections',
+    'lines/:lines/directions/:directions' : 'loadDirections',
 
-        'lines/:lines/directions/:directions/stations' : 'loadMap'
-    },
-
-    <all functions are listed below>
+    'lines/:lines/directions/:directions/stations' : 'loadMap'
+  },
+  <all functions are listed here>
 });
-
 module.exports = ApplicationRouter;
-\end{lstlisting}
+\end{verbatim}
+}
 \newpage
-
 Come in ogni definizione di nuovi moduli, ApplicationRouter importa il modulo Router che garantisce le funzionalità base messe a disposizione da Backbone. 
 All'interno di ApplicationRouter viene definita la proprietà \code{route}, il quale conserva al suo interno i riferimenti tra le rotte che il router deve riscontrare e le funzioni che verranno invocate nel caso il riscontro associato ad esse sia positivo.
 
@@ -160,24 +174,21 @@ Ogniqualvolta l'utente seleziona una linea e/o direzione di preferenza, la compo
 
 L'aggiornamento dell'url avviene attraverso l'utilizzo del metodo nativo \code{navigate} del modulo Router. \code{navigate} permette la navigazione verso un indirizzo che deve essere passato come parametro al metodo. Inoltre ad ogni chiamata di \code{navigate} l'indirizzo a cui si vuole navigare viene salvato nella cronologia, questo comportamento può essere evitato attraverso il passaggio di appositi parametri.
 
-In questo progetto l'aggiornamento delle rotte viene effettuato dalle collezioni \ref{sec:collezioni}. Esse conoscendo gli elementi selezionati  possono costruire la rotta corrispondente nella maniera opportuna.
+In questo progetto l'aggiornamento delle rotte viene effettuato dalle collezioni. Esse conoscendo gli elementi selezionati  possono costruire la rotta corrispondente nella maniera opportuna.
 % subsection subsection_name (end)
-\newpage
 
 La struttura dell'indirizzo web concepita per questa applicazione è la seguente, essa viene esposta nella sua completezza, ma durante la navigazione del servizio l'url verrà ``composto'' un passo alla volta:
 
-\begin{lstlisting}
+\begin{verbatim}
    lines/:lines/directions/:directions/stations
-\end{lstlisting}
+\end{verbatim}
 
 l'indirizzo è suddiviso nella sezione linee, la sezione direzioni ed infine la sezione stazioni. In Backbone, un elemento nella rotta avente i  due punti di prefisso rappresenta un parametro. \code{:lines} e \code{:directions} contengono quindi le linee e le direzioni che l'utente ha scelto di consultare, le quali sono definite attraverso il loro codice identificativo
 
-Lo scopo di questi parametri è duplice: ad esempio, se la sezione dei parametri delle è l'ultima porzione dell'indirizzo (come \code{lines/:lines}), vuol dire che si sta richiedendo l'elenco di tutte le linee, e che quelle presenti nel parametro sono già selezionate. Il router quindi richiederà al server tutti gli oggetti linea e li salverà nella collezione, dopodiché provvederà ad impostare le proprietà \code{checked} degli oggetti linea che corrispondono a quelli elencati nel parametro.
+Lo scopo di questi parametri è duplice: ad esempio, se la sezione dei parametri delle linee è l'ultima porzione dell'indirizzo (come \code{lines/:lines}), vuol dire che si sta richiedendo l'elenco di tutte le linee, e che quelle presenti nel parametro sono già selezionate. Il router quindi richiederà al server tutti gli oggetti linea e li salverà nella collezione, dopodiché provvederà ad impostare le proprietà \code{checked} degli oggetti linea che corrispondono a quelli elencati nel parametro.
 Se invece al parametro sussegue un'ulteriore porzione di url (come \code{lines/:lines/directions...}), il router comprenderà che si stanno richiedendo degli oggetti Direzione, e per specificare al server di quali direzioni si ha bisogno invierà nella richiesta anche il parametro delle linee.
 
-La composizione dell'indirizzo in sezioni è inoltre utile ai fini dell'utente: dopo aver selezionato per la prima volta le linee e direzioni che si vogliono consultare, l'url rappresenta un link simbolico a quel set di preferenze. Quindi l'utente potrà salvare l'indirizzo e riutilizzarlo per accedere immediatamente alla visualizzazione degli autobus in circolazione, senza dover ripetere il processo di selezione ancora e ancora.
-
-\vspace{1cm}
+La composizione dell'indirizzo in sezioni è inoltre utile ai fini dell'utente: dopo aver selezionato per la prima volta le linee e direzioni che si vogliono consultare, l'url rappresenta un link simbolico a quel set di preferenze. Quindi l'utente potrà salvare l'indirizzo e riutilizzarlo per accedere immediatamente alla visualizzazione degli autobus in circolazione, senza dover ripetere il processo di selezione ancora e ancora.\\
 
 Tornando al Router, si può notare come le rotte siano definite in tre gruppi distinti: ogni gruppo rappresenta un tipo di sezione che il Router deve saper interpretare ed elaborare. Per ogni gruppo viene chiamata rispettivamente la funzione \code{loadLines}, \code{loadDirections} e \code{loadMap}, dove ognuno è adibito al prelievo delle rispettive risorse. Il nome dell'ultimo metodo non è chiaro: la funzione non si occupa del caricamento della mappa dal server, ma racchiude in se il prelievo degli oggetti fermata e autobus, i quali verranno poi posizionati sulla mappa già disponibile sulla pagina web.
 
@@ -192,39 +203,30 @@ Per prima cosa dunque richiede all'Application la collezione linee, e su questa 
 Descritta la definizione dei modelli e conclusa la trattazione del Router, fondamentale per la piena comprensione di questa sezione, si procede alla costruzioni delle entità capaci di gestire molteplici istanze dei modelli: le Collections.
 
 Focalizzandosi sempre sulla direzione, la struttura base per la definizione di una collection è la seguente:
-
-\begin{lstlisting}
+{\footnotesize
+\begin{verbatim}
 var Collection = require('core/Collection');
 var Direction = require('models/Direction');
-
 var Directions = Collection.extend({
-    
-    model: Direction,
-    
-    url: '/directions',
-    
-    initialize: function() {
-        this.on("change", this.setSelectedOnUrl);
-    },
-    parseSelected : function() {
-        ...
-    },    
-    setSelectedOnUrl: function() {
-        this.setUrl(false)
-    },
+  model: Direction,
+  url: '/directions',
+  initialize: function() {this.on("change", this.setSelectedOnUrl)},
+  parseSelected : function() { ... },    
+  setSelectedOnUrl: function() {this.setUrl(false)},
    setUrl: function(trigger, tail, head) {
-        ...
-        router.navigate(this.prefix + this.url, {trigger: trigger})
-        }   
-    },
-    goToStation: function() {
-        router.navigate(url.join('/'), {trigger: true, replace:true})
-    }
+    ...
+    router.navigate(this.prefix + this.url, {trigger: trigger})
+    }   
+  },
+  goToStation: function() {
+      router.navigate(url.join('/'), 
+          {trigger: true, replace:true})
+  }
 });
-
 module.exports = Directions;
-\end{lstlisting}
-
+\end{verbatim}
+}
+\newpage
 Come nella dichiarazione dei modelli, la collezione crea un riferimento alla struttura base Collection e al modello opportuno.
 
 La collezione oltre a dover conoscere il modello di riferimento dovrà essere inizializzata con un \code{url}. Tale proprietà indicherà alla collezione la rotta su cui richiedere le informazioni per istanziare/modificare i propri modelli.
@@ -250,31 +252,19 @@ Il principio di funzionamento è il seguente: attraverso l'{\itshape event handl
 
 Attraverso le viste è infine possibile visualizzare all'utente i dati di cui ha bisogno filtrati e modellati attraverso le scelte che ha effettuato durante la navigazione del servizio.
 La struttura generale di una Vista di Backbone è la seguente:
-
-\begin{lstlisting}
+{\small
+\begin{verbatim}
 var View     = require('core/View');
 var template = require('templates/DirectionTemplate');
-
-var DirectionView = View.extend({
-      
-      template: template,
-
-      events: {
-      ...
-      }
-
-      initialize {
-      ...
-      }
-
-      render {
-      ...
-      }
+var DirectionView = View.extend({    
+    template: template,
+    events: { ... }
+    initialize { ... }
+    render { ... }
 }
-
 module.exports = DirectionView;
-\end{lstlisting}
-
+\end{verbatim}
+}
 
 Oltre ad importare le funzioni standard offerte dal modulo View di Backbone, nella definizione di una nuova vista vi è il bisogno di importare un template costruito in precedenza, il quale fornisce alla vista la struttura HTML per la visualizzazione dei dati a cui la vista fa riferimento.
 Alla creazione di una vista è possibile passare una o più di opzioni le quali saranno attribuite alla vista tramite \code{this.options}. Esistono inoltre alcuno opzioni speciali che possono essere attribuite direttamente alla Vista, quali \code{model}, \code{collection}, \code{el}, \code{id}, \code{attributes} \code{className} e \code{tagName}. All'interno della View può essere definita la funzione di inizializzazione, la quale sarà chiamata al momento della creazione della vista.
@@ -310,9 +300,11 @@ I template sono {\itshape logic-less}, ciò vuol dire che la filosofia generale 
 \label{ssub:mustache}
 Un template molto diffuso che fa uso di questi principi è {\itshape Mustache}.
 Una tipica sintassi di Mustache è la seguente: \lstinline!Hello {{name}} {{lastname}}!. Gli elementi contenuti all'interno dei tag {{}} costituiscono il nome dei parametri che vengono passati al template tramite formato JSON, con la tipica forma:
-\begin{lstlisting}
-    {"name": "Valerio", "lastname": "Lanziani"}
-\end{lstlisting}
+{\small
+\begin{verbatim}
+  {"name": "Valerio", "lastname": "Lanziani"}
+\end{verbatim}
+}
 Quando il template verrà renderizzato, al posto dei nomi dei parametri verranno visualizzati i rispettivi valori. Oltre alla visualizzazione di semplici stringhe, Mustache permette attraverso i tag \lstinline!{{#list}}{{/list}}! il passaggio di collezoni di oggetti, i quali verrano visualizzati in modo sequenziale all'interno dei due tag. Allo stesso modo è possibile passare come parametri dei metodi che dovranno tornare come valore la stringa che si desidera mostrare.
 
 Per quanto Mustache offra in modo sintetico le funzionalità base per una visualizzazione pulita e comprensibile delle informazioni, questo template pecca di fin troppa semplicità.
@@ -328,19 +320,23 @@ Handlebars applica gli stessi principi {\itshape DRY} e {\itshape logic-less} co
 Handlebars garantisce una completa compatibilità con il template Mustache, offrendo lo stesso tipo di sintassi descritta in Mustache. E' dunque possibile importare direttamente l'intera struttura creata con Mustache in un template Handlebars, così da poter iniziare subito ad usufruire delle caratteristiche introdotte da questo template.
 
 Nel caso si disponga di una struttura dati nidificata come, ad esempio:
-\begin{lstlisting}
-    {"fullname": {"name": "Valerio", "lastname": "Lanziani"}}
-\end{lstlisting}
+{\small
+\begin{verbatim}
+  {"fullname": {"name": "Valerio", "lastname": "Lanziani"}}
+\end{verbatim}
+}
 Non sarebbe possibile con Mustache la richiesta del valore ``name''. Tramite Handlebars, è possibile invece utilizzare la sintassi \lstinline!{{fullname.name}}! per permettere al template di rappresentare anche informazioni nidificate.
 
 Handlebars fornisce anche la possibilità di definire degli helpers, ossia delle funzioni a cui è possibile passare dinamicamente uno o più parametri. Attraverso la sintassi \lstinline!{{{link line}}}! è possibile richiamare la funzione link definita nel template nel modo seguente:
-\begin{lstlisting}
+{\small
+\begin{verbatim}
 Handlebars.registerHelper('link', function(line) {
   return new Handlebars.SafeString(
-    "<a href='" + line.url + "'>" + line.text + "</a>"
+  "<a href='" + line.url + "'>" + line.text + "</a>"
   );
 });
-\end{lstlisting}
+\end{verbatim}
+}
 Dunque durante la chiamata \code{link} rappresenta il nome della funzione mentre \code{line} è il parametro che gli viene passato.
 Un'altra caratteristica di Handlebars è l'offerta di helpers precostruiti come \lstinline!{{#if condition}}True{{/if}}!. Il blocco provvede a verificare l'esistenza ed il valore del parametro \code{condition}, se questo non risulta essere nullo, falso o vuoto, Handlebars procederà alla visualizzazione del contenuto della condizione if.
 
@@ -348,6 +344,7 @@ Anche se durante lo sviluppo non vi è stato il bisogno di implementare istruzio
 % subsubsection handlebars (end)
 
 % subsection templating (end)
+\newpage
 
 \subsection{Visualizzazione delle informazioni} % (fold)
 \label{sub:visualizzazione_delle_informazioni}
@@ -364,53 +361,51 @@ Google Maps offre sia un servizio di mappe statiche che dinamiche: nel primo cas
 Per quanto molto semplice una mappa statica risulta poco appetibile, impedendo una qualsiasi interazione attraverso di essa: non è possibile scorrere la mappa o analizzare un punto preciso di interesse, se non tramite una nuova richiesta effettuata da un metodo esterno.
 
 Si sceglie dunque di adottare la libreria delle mappe dinamiche, la quale utilizza il linguaggio JavaScript per la creazione, visualizzazione e modifica della mappa. Grazie a questo i metodi di gestione della mappa possono essere integrati in maniera armoniosa all'interno delle strutture già definite precedentemente nel servizio.
-
+\newpage
 Per la crezione di una mappa si fa ricorso al metodo \code{initialize()}:
-
-\begin{lstlisting}
-    function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(lat, lng),
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map_canvas"),
-            mapOptions);
-      }
-\end{lstlisting}
-
-
+{\small
+\begin{verbatim}
+  function initialize() {
+    var mapOptions = {
+      center: new google.maps.LatLng(lat, lng),
+      zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
+      mapOptions);
+    }
+\end{verbatim}
+}
 All'interno di questa funzione vi è bisogno di specificare alcune proprietà fondamentali che permettono alla mappa di essere visualizzata nel modo corretto, quali \code{center}, \code{zoom} e \code{mapTypeId}.
 L'opzione \code{mapTypeId} specifica se la mappa disporrà della vista satellitare o stradale.
 
 Una volta specificate le opzioni, si procede alla creazione della mappa, la quale richiede, ovviamente, le opzioni definite precedentemente. Oltre a questo parametro, vi è il bisogno di passare il riferimento ad un elemento del DOM, come ad esempio un \code{<div>}.
-Durante la creazione la mappa verrà renderizzata automaticamente all'interno dell'elemento che gli è stato fornito, occupando tutto lo spazio a disposizione.
-\vspace{0.5cm}
+Durante la creazione la mappa verrà renderizzata automaticamente all'interno dell'elemento che gli è stato fornito, occupando tutto lo spazio a disposizione.\\
 
 Ora che la mappa è stata creata, occorre rappresentare le stazioni e gli autobus che l'utente ha selezionato, rendendoli visibili tramite una serie di punti collocati sulle coordinate definite all'interno degli oggetti.
 
 Per fare questo Google Maps offre un sistema di overlays, oggetti legati alla mappa tramite una coordinata. In questo modo durante lo scorrimento gli oggetti sono capaci di muoversi in corrispondenza del verso.
 
 Tra gli overlays sono specificati gli oggetti {\itshape Marker}, il quale scopo è specificare un punto della mappa. Questi oggetti utilizzano un'icona che una volta visualizzata verrà agganciata nella coordinata definita nel marker.
-
+\newpage
 Per la costruzione di un marker la sintassi è la seguente:
 
-\begin{lstlisting}
+\begin{verbatim}
   var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(lat, lng),
-      map: map
+    position: new google.maps.LatLng(lat, lng),
+    map: map
   });
-\end{lstlisting}
+\end{verbatim}
 
 La creazione di un marker base richiede due parametri: uno di questi è naturalmente la coordinata, senza la quale un marker non può essere definito. Inoltre il marker ha bisogno di un riferimento alla mappa su cui esso deve essere posizionato, ciò viene fatto impostando la proprietà map. Se essa viene tralasciata pur specificando la posizione, l'oggetto non verrà visualizzato.
 
-E' anche possibile assegnare un'immagine diversa da quella predefinita, impostando la proprietà \code{icon} con un oggetto immagine, il quale avrà un riferimento all'icona personalizzata.
-\vspace{0.5cm}
+E' anche possibile assegnare un'immagine diversa da quella predefinita, impostando la proprietà \code{icon} con un oggetto immagine, il quale avrà un riferimento all'icona personalizzata.\\
 
 I metodi di creazione della mappa e dei marker vengono definiti all'interno della vista \code{MapView}, questa vista si assume il compito di generare la mappa al primo accesso al sito. Dopodiché, ogni volta che l'utente specifica le direzioni che vuole consultare, la vista procederà al caricamento di tutti i marcatori che rappresentano le stazioni e gli autobus delle direzioni di riferimento, attribuendo per ogni direzione un diverso simbolo.
 
 Per consentire una visualizzazione sempre aggiornata delle posizioni degli autobus, viene definita una funzione specializzata alla richiesta delle informazioni aggiornate riguardo gli autobus appartenenti alle direzioni preferite. La richiesta viene temporizzata per rendere il processo automatico, ed ogni volta che la collezione di autobus verrà ricaricata con i nuovi elementi, la vista provvederà a ristampare i marcatori nella giuste posizioni.
 % subsubsection la_mappa (end)
+\newpage
 
 \subsubsection{Struttura dell'interfaccia} % (fold)
 \label{ssub:struttura_dell_interfaccia}
@@ -419,12 +414,16 @@ Per concludere questa sezione di sviluppo vengono descritte brevemente le scelte
 
 Per fare sì che questo servizio sia fruibile da qualsiasi utente in qualsiasi posto egli si trovi, occore fare in modo che l'applicazione web sia facilmente consultabile da qualsiasi dispositivo, sia questo un computer, tablet o smartphone.
 
-Viene pertanto utilizzato il {\itshape Responsive Web Design}, una tecnica di web design per la realizzazione di siti web capaci di adattare automaticamente il layout della pagina, fornendo una visualizzazione ottimale in funzione dell'ambiente nei quali nei quali vengono visualizzati. Ciò riduce al minimo la necessita di ridimensione e scorrimento della pagina da parte dell'utente, contribuendo ad un'esperienza semplice ed appagante.
-\vspace{0.5cm}
+Viene pertanto utilizzato il {\itshape Responsive Web Design}, una tecnica di web design per la realizzazione di siti web capaci di adattare automaticamente il layout della pagina, fornendo una visualizzazione ottimale in funzione dell'ambiente nei quali nei quali vengono visualizzati. Ciò riduce al minimo la necessita di ridimensione e scorrimento della pagina da parte dell'utente, contribuendo ad un'esperienza semplice ed appagante.\\
 
-Riguardo la strutturazione del layout di pagina di questo servizio, si è fatto ricorso al framework {\itshape Twitter Bootstrap}
+Riguardo la strutturazione del layout di pagina di questo servizio, si è fatto ricorso al framework {\itshape Twitter's Bootstrap}.
+Bootstrap, piattaforma fornita dall'azienda Twitter, offre dei potenti strumenti per la creazione di siti o applicazioni web, fornendo dei template HTML e CSS pre-costruiti per definizione di tipografie, form, pulsanti e molti altri componenti. Grazie a questa truttura è possibile in poco tempo realizzare strutture grafiche semplici e complesse.
+
+Attraverso l'utilizzo di questo framework è stata definita un'interfaccia web composta da due sezioni verticali. La prima sezione è adibita alla selezione delle linee e delle direzioni che si vogliono consultare, mentre nella seconda sezione trova posto la mappa. In questo modo la mappa è sempre sotto l'occhio dell'utente, così da poter continuare a visualizzare le direzioni selezionate anche mentre l'utente consulta nuove linee. Alla pressione del pulsante di aggiornamento mappa, quest'ultima verrà aggiornata con i nuovi punti di interesse scelti dall'utente.
+
+Bootstrap inoltre può essere configurato per supportare il design responsive, così da rendere quest'applicazione web fruibile da qualsiasi postazione si faccia accesso.
 % subsubsection struttura_dell_interfaccia (end)
 
 % subsection visualizzazione_delle_informazioni (end)
-% section sviluppo (end)
 
+% section sviluppo (end)

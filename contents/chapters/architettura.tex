@@ -15,7 +15,7 @@ Infine le risorse vengono definite e indirizzate tramite il REpresentational Sta
 
 % section section_name (end)
 
-Per una webApp è necessaria un’architettura Server-Client, formata cioè da due parti ben distinte che comunicano attraverso un linguaggio ad esse comune.
+Per la realizzazione di una webApp è necessaria un’architettura Server-Client, formata cioè da due parti ben distinte che comunicano attraverso un linguaggio ad esse comune.
 
 Per far si che l’applicazione sia semplice da utilizzare ed accessibile alla maggior parte dell’utenza, è necessario che il progetto relativo al lato Client sia ben strutturato affinché sia facile la ricerca delle informazioni da parte dell’utente. E gestisca in maniera efficiente la mole di dati inviati dal Server.
 
@@ -30,31 +30,49 @@ Secondo quanto sopra, è facilmente intuibile come il server si trovi a gestire 
  \section{Applicazioni web: one page application} % (fold)
 \label{sec:applicazioni_web_one_page_application}
 
-Per comprendere il sistema che è alla base di questa architettura, si forniscono degli esempi. Essi partono da interazioni Cliet-Server di vecchio modello e arrivano a quelle di nuova generazione facendo notare la loro evoluzione. In un sito web tradizionale, l’esperienza dell’utente verrebbe trattata semplicemente facendo uso di una serie di reindirizzamenti come si può vedere dalla figura n.1 sotto riportata:
+Per comprendere il sistema che è alla base di questa architettura, si forniscono degli esempi. Essi partono da interazioni Cliet-Server di vecchio modello e arrivano a quelle di nuova generazione facendo notare la loro evoluzione. In un sito web tradizionale, l’esperienza dell’utente verrebbe trattata semplicemente facendo uso di una serie di reindirizzamenti come si può vedere dalla figura n.1 sotto riportata:\\
 
+\vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics{contents/images/web_app_flow_2_1_}
+\includegraphics[width=13cm]{contents/images/traditional_web_site}
 \end{center}
-\caption{}
+\caption{comportamento di un website tradizionale}
 \label{fig:flow_0}
 \end{figure}
+\vspace{1cm}
 
 L’utente, tramite Client, accede al sito web; il server riceve e processa la richiesta ricevuta, genera i dati, li elabora se richiesto, e li invia con l’HTML necessario al client che, una volta ricevute le informazioni le elabora e consente la visualizzazione. A questo punto l’utente è in condizioni di navigare liberamente cercando quello di cui ha bisogno tenendo presente, però, che ad ogni singola richiesta corrisponde una nuova elaborazione, da parte del server, che dovrà generare nuovi dati, elaborati o non, per restituirli con l’HTML al client che verrà reindirizzato sulla pagina richiesta.
 \newpage
 Un’applicazione web di nuova generazione, ossia one page application, invece, previene qualsiasi reindirizzamento non necessario e permette la visualizzazione di diverse richieste in un’unica pagina, rendendo l’esperienza dell’utente molto più fluida e veloce come dalla figura n. 2 sotto riportata:
 
+\vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics{contents/images/web_app_flow_3_1_}
+\includegraphics[width=13cm]{contents/images/web_application}
 \end{center}
-\caption{}
+\caption{comportamento di una web application}
 \label{fig:flow_1}
 \end{figure}
+\vspace{1cm}
 
-Qui, l’utente, tramite Client, accede al sito web ma, in questo caso, il server non elabora dati, né genera l’HTML, si limita a trasmette al browser tutte le risorse necessarie affinché possano essere elaborate per la creazione dei differenti aspetti della pagina. A questo punto inizia la navigazione dell’utente, il client invia le richieste al server tramite chiamate asincrone di tipo AJAX ed esso, processando quanto richiesto, restituirà solamente le informazioni che interesano. E’ compito del client occuparsi della visualizzazione corretta di quanto ricevuto utilizzando le risorse già in suo possesso.
+Qui l’utente, tramite Client, accede al sito web ma, in questo caso, il server non elabora dati né genera l’HTML. Esso si limita a trasmettere al browser tutte le risorse necessarie tramite il formato JSON, affinché queste possano essere elaborate per la creazione dei differenti aspetti della pagina. A questo punto inizia la navigazione dell’utente, il client invia le richieste al server tramite chiamate asincrone di tipo AJAX ed esso, processando quanto richiesto, restituirà solamente le informazioni che interesano. E’ compito del client occuparsi della visualizzazione corretta di quanto ricevuto utilizzando le risorse già in suo possesso.
 
-Da questa breve trattazione si può notare come l’utilizzo di un’applicazione web di ultima generazione incrementi notevolmente la reattività del servizio. In queste webApp il carico di lavoro, non grava più esclusivamente sul server, ma viene ripartito tra i due lati. Questo permette al server di occuparsi della gestione dei dati e lascia tutti i compiti di presentazione al browser, che da semplice visualizzatore diventa, a tutti gli effetti, uno strumento attivo per la costruzione delle strutture di rappresentazione dei dati.
+\newpage
+
+Per apprendere meglio il significato  delle richieste AJAX e del formato JSON si proceda alla lettura delle sezioni successive:
+
+\subsection{AJAX} % (fold)
+\label{sub:ajax}
+AJAX, acronimo di {\itshape Asynchronous JavaScript and XML}, è una tecnica di sviluppo per la realizzazione di applicazioni web interattive. Lo sviluppo di applicazioni HTML con AJAX si basa su uno scambio di dati in background fra web browser e server, che consente l'aggiornamento dinamico di una pagina web senza esplicito ricaricamento da parte dell'utente. AJAX è asincrono nel senso che i dati extra sono richiesti al server e caricati in background senza interferire con il comportamento della pagina esistente. Normalmente le funzioni richiamate sono scritte con il linguaggio JavaScript.
+% subsection ajax (end)
+
+\subsection{JSON} % (fold)
+\label{sub:json}
+JSON, acronimo di {\itshape JavaScript Object Notation}, è un formato molto diffuso utilizzato per lo scambio di dei dati in applicazioni client-server. La semplicità di JSON ne ha decretato un rapido utilizzo nella programmazione in AJAX. JSON permette di trasformare delle strutture dati in formati stringa, strutturate da una sintassi ben precisa che ne permette anche la ricostruzione ai modelli di dati originari. JSON è molto diffuso perché permette un trasferimento tra client e server veloce, permettendo di comunicare dati anche molto complessi sotto una leggera forma in stringhe.\\
+% subsection json (end)
+
+Da questa breve trattazione si può notare come l’utilizzo di un’applicazione web di ultima generazione incrementi notevolmente la reattività del servizio. In queste webApp il carico di lavoro, non grava più esclusivamente sul server, ma viene ripartito tra i due lati. Questo permette al server di occuparsi della gestione dei dati e lascia tutti i compiti di presentazione al browser, che da semplice visualizzatore diventa, a tutti gli effetti, uno strumento attivo per la gestione delle strutture di rappresentazione dei dati.
 
 \newpage
 
@@ -68,7 +86,7 @@ MVC si basa sul concetto di applicazione basata su tre livelli: Model, View e Co
 \begin{center}
 \includegraphics[width=10cm]{contents/images/mvc}
 \end{center}
-\caption{}
+\caption{Il pattern MVC}
 \label{fig:mvc}
 \end{figure}
   
