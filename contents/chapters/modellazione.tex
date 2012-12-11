@@ -89,10 +89,9 @@ In ogni azienda di trasporti pubblici per ogni linea vengono inizialmente assegn
 Una volta giunto al capolinea l'autobus procede alla discesa di tutti i passeggeri e prosegue verso il magazzino di raccolta degli autobus, se conclude la sua corsa. In caso l'autobus debba ancora offrire il servizio di trasporto esso viene assegnato alla direzione opposta a quella appena conclusa, ripercorrendo il tragitto nel verso opposto.
 
 Un autobus non possiede un nome di riferimento, ma specifica la la linea e la direzione che sta percorrendo, in modo tale che i cittadini possano sapere in quale parte della città il mezzo li può condurre.
-Inoltre gli autobus posseggono solitamente di un codice identificativo, in modo tale che il sistema interno del servizio dei trasporti possa effettuare una catalogazione dei mezzi di cui dispone. Ai fini dell'utente finale però, questo attributo non risulta di alcuna utilità.\\
-% subsubsection autobus (end)
+Inoltre gli autobus posseggono solitamente di un codice identificativo, in modo tale che il sistema interno del servizio dei trasporti possa effettuare una catalogazione dei mezzi di cui dispone. Ai fini dell'utente finale però, questo attributo non risulta di alcuna utilità.
 
-Ricapitolando, possiamo definire quindi quattro distinte classi:
+Ricapitolando, possiamo definire quindi quattro distinte classi:\\
 
 {\itshape Linea}
 
@@ -100,9 +99,9 @@ Ricapitolando, possiamo definire quindi quattro distinte classi:
 
 {\itshape Fermata}
 
-{\itshape Autobus}
+{\itshape Autobus}\\
 
-Le quali vengono rappresentate nel diagramma del modello di dominio nel modo seguente:
+Le quali vengono rappresentate nel diagramma del modello di dominio nella pagina successiva:
 
 \vspace{1cm}
 \begin{figure}[htbp]
@@ -126,6 +125,7 @@ Proseguendo, si può notare come a sua volta ogni direzione sia composta da un c
 Concludendo con l'ultima classe, un autobus è associato ad'una direzione univoca e, durante il suo tragitto, si ferma in ogni fermata definita dalla direzione. In una direzione transitano più autobus e, allo stesso modo, in una fermata possono fermare più autobus. Le relazioni tra Autobus e Direzione e Autobus e Fermata saranno definite rispettivamente dall'associazione ``Appartiene'' di molteplicità N a 1 e dall'associazione `Collocato su'' di molteplicità N a 1.
 \newpage
 Avendo quindi specificato tutte le associazioni essenziali, il diagramma del modello di dominio assume questa forma:
+
 \vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
@@ -135,6 +135,7 @@ Avendo quindi specificato tutte le associazioni essenziali, il diagramma del mod
 \label{fig:domain_model}
 \end{figure}
 \vspace{1cm}
+
 La rappresentazione finale del modello di dominio di questo caso di studio è un diagramma molto semplice e snello, racchiudendo solamente i dettagli essenziali per la progettazione del servizio descritto in questo elaborato.
 Come già spiegato in precedenza, il suo scopo non è descrivere in maniera esaustiva il comportamento di un servizio di trasporti urbani, ma si limita a definirne una concezione semplificata e, allo stesso tempo, sufficientemente completa per poter progettare un servizio efficiente.
 

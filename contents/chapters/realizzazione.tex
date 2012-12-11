@@ -9,7 +9,7 @@ Nativamente JavaScript non fornisce alcun sistema di modularizzazione, si cerca 
   \item Le dipendenze sono dichiarate in modo debole: il programmatore ha bisogno di sapere l'ordine esatto delle dipendenze. Ad esempio, per definire una classe Direzione che si riferisca ad una Fermata, la classe Fermata deve essere definita prima di Direzione
   \item Il caricamento degli script lato client può diventare in certi casi molto lento e deve essere ottimizzato
 \end{itemize}
-
+\newpage
 Tutto ciò può diventare difficoltoso in caso di progetti complessi, in modo particolare quando gli script cominciano ad avere molte dipendenze, le quali tendono a sovrapporsi e nidificarsi. Inoltre la definizione manuale dei tag script non è scalabile, e non offre la possibilità di caricare gli script su richiesta.
 
 \subsubsection{Common.js} % (fold)
@@ -79,7 +79,7 @@ Ora che è stata conclusa la breve descrizione del procedimento di estrazione de
 \subsection{Interfaccia client-server} % (fold)
 \label{sub:interfaccia_client_server}
 
-Come descritto nel capitolo architetturale il sistema fa uso di un'interfaccia di tipo REST \ref{sec:direttive_rest}. Questo comporta che il client può accedere a qualunque risorsa sul server attraverso delle chiamate HTTP che nel caso specifino saranno effettuate attraverso l'utilizzo del metodo \code{get}, poiché l'accesso alle risorse è effettuato solo in lettura.
+Come descritto nel capitolo architetturale il sistema fa uso di un'interfaccia di tipo REST (si consulti la sezione \ref{sec:direttive_rest}). Questo comporta che il client può accedere a qualunque risorsa sul server attraverso delle chiamate HTTP che nel caso specifino saranno effettuate attraverso l'utilizzo del metodo \code{get}, poiché l'accesso alle risorse è effettuato solo in lettura.
 Le principale risorse sono:
 \begin{itemize}
   \item Linee
@@ -95,30 +95,41 @@ Alla richiesta di una certa collezione di direzioni, il client effettua una chia
 Il parametro sarà della forma: \code{lines=170-766}.
 
 Il server quindi restituirà i dati richiesti in formato JSON che, continuando con l'esempio precedente, avranno la seguente struttura:
+\vspace{1cm}
+{\small
 \begin{verbatim}
 [
-  {
-    "id": "1700",
-    "name": "170 Direzione Termini (MA-MB-FS)"
-  },
-  {
-    "id": "1701",
-    "name": "170 Direzione Agricoltura"
-  },
+  {"id": "1700", "name": "170 Direzione Termini (MA-MB-FS)"},
+  {"id": "1701", "name": "170 Direzione Agricoltura"}
   ...
-  { 
-    "id": "7660",
-    "name": "766 Direz. Millevoi"
-  },
+  {"id": "7660", "name": "766 Direz. Millevoi"},
   ...
 ]
  \end{verbatim} 
+}
+\vspace{1cm}
+\newpage
 
 Nel caso non venga fornito alcun parametro nella richiesta, il server fornirà come risposta un errore 400 di sintassi errata.
 
 Per un maggiore approfondimento riguardo l'interfaccia si faccia riferimento all'appendice \ref{apx:API}.\\
 
-Procediamo ora con la descrizione dei vari moduli che compongono questo servizio:
+Da un punto di vista globale, il sistema dunque funziona tramite un interfacciamento HTTP REST tramite browser e server, dove il primo richiede i dati al secondo fornendo eventuali parametri, se necessari. Il server a questo punto provvede alla restituzione dei dati richiesti, ricercandoli all'interno del suo archivio o attraverso un crawling dei dati su un risorsa esterna, nel caso non li avesse a disposizione.
+Una volta ricavati tutti i contenuti necessari al client, il server li converte e li invia nuovamente al browser in formato JSON. Una volta ricevuti i dati richiesti, il client procederà alla loro costruzione in strutture opportune e provvederà alla loro visualizzazione su pagina web.
+
+\vspace{1cm}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=12cm]{contents/images/client-server}
+\end{center}
+\caption{Interfacciamento client-server}
+\label{fig:classes}
+\end{figure}
+\vspace{1cm}
+
+\newpage
+
+Avendo dunque descritto la struttura comportamentale del sistema, procediamo ora con la descrizione dei vari moduli che compongono questo servizio e di come sia possibile effettuare le richieste e rendere visibili i dati all'utente.
 
 \subsection{Application} % (fold)
 \label{sub:application}
@@ -134,11 +145,13 @@ Application sarà quindi l'unico modulo importato nella pagina HTML di riferimen
 \subsection{Modelli del servizio} % (fold)
 \label{sub:modelli_del_servizio}
 
-Avendo dunque definito la struttura base della nostra applicazione, si proceda con la definizione e creazione del cuore del servizio: i modelli.
+Definita la struttura base della nostra applicazione, si proceda con la definizione e creazione del cuore del servizio: i modelli.
 
 Seguendo le specifiche del diagramma delle classi di progetto definite nel capitolo \ref{cha:progettazione}, vi è il bisogno di definire quattro modelli: Linea, Direzione, Fermata e Autobus.
 
-Come esempio dimostrativo, verrà mostrata la sintassi di definizione del modello Direzione:
+Come esempio dimostrativo, verrà mostrata la sintassi di definizione del modello Direzione nella pagina successiva:
+
+\newpage
 {\small
 \begin{verbatim}
 var Model = require('core/Model');
@@ -406,8 +419,10 @@ Per la crezione di una mappa si fa ricorso al metodo \code{initialize()}:
       zoom: 8,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
-      mapOptions);
+    var map = new google.maps.Map(
+        document.getElementById("map_canvas"),
+        mapOptions
+      );
     }
 \end{verbatim}
 }
@@ -415,14 +430,14 @@ All'interno di questa funzione vi è bisogno di specificare alcune proprietà fo
 L'opzione \code{mapTypeId} specifica se la mappa disporrà della vista satellitare o stradale.
 
 Una volta specificate le opzioni, si procede alla creazione della mappa, la quale richiede, ovviamente, le opzioni definite precedentemente. Oltre a questo parametro, vi è il bisogno di passare il riferimento ad un elemento del DOM, come ad esempio un \code{<div>}.
-Durante la creazione la mappa verrà renderizzata automaticamente all'interno dell'elemento che gli è stato fornito, occupando tutto lo spazio a disposizione.\\
+Durante la creazione la mappa verrà renderizzata automaticamente all'interno dell'elemento che gli è stato fornito, occupando tutto lo spazio a disposizione.
 
 Ora che la mappa è stata creata, occorre rappresentare le stazioni e gli autobus che l'utente ha selezionato, rendendoli visibili tramite una serie di punti collocati sulle coordinate definite all'interno degli oggetti.
 
 Per fare questo Google Maps offre un sistema di overlays, oggetti legati alla mappa tramite una coordinata. In questo modo durante lo scorrimento gli oggetti sono capaci di muoversi in corrispondenza del verso.
 
 Tra gli overlays sono specificati gli oggetti {\itshape Marker}, il quale scopo è specificare un punto della mappa. Questi oggetti utilizzano un'icona che una volta visualizzata verrà agganciata nella coordinata definita nel marker.
-\newpage
+
 Per la costruzione di un marker la sintassi è la seguente:
 
 \begin{verbatim}

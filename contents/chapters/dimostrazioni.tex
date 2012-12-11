@@ -4,53 +4,53 @@ Accedendo alla pagina iniziale, il servizio carica tutte le linee monitorate (pe
 \vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=13cm]{contents/images/home}
+\includegraphics[width=12cm]{contents/images/home}
 \end{center}
 \caption{Pagina iniziale}
-\label{fig:fermata}
+\label{fig:home}
 \end{figure}
 
 \newpage
-Al momento della selezione delle linee scelte, il servizio prosegue richiedendo le direzioni appartenti a quelle linee per poi visualizzare all'utente, come si può constatare nella seguente figura:
+Al momento della selezione delle linee scelte, il servizio prosegue richiedendo le direzioni appartenti a quelle linee per poi visualizzare all'utente, nell'esempio in figura vengono riportate le direzioni delle linee 170 e 766:
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=13cm]{contents/images/directions}
+\includegraphics[width=12cm]{contents/images/directions}
 \end{center}
 \caption{Lista delle direzioni}
-\label{fig:fermata}
+\label{fig:directions}
 \end{figure}
 
-E' possibile notare come l'url sia composto dinamicamente in base alle scelte dell'utente, in base ai cambi di scelta che vengono richiesti, l'indirizzo viene assemblato con i giusti parametri:
+E' possibile notare come l'url sia composto dinamicamente in base alle scelte dell'utente, in base ai cambi di scelta che vengono richiesti, l'indirizzo viene assemblato con i giusti parametri. Nella figura \ref{fig:indirizzo} si può osservare come cambiando le direzioni selezionate l'url viene riconfigurato con gli identificatori delle direzioni:
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=12cm]{contents/images/indirizzo}
 \end{center}
 \caption{Modifica dinamica dell'url}
-\label{fig:fermata}
+\label{fig:indirizzo}
 \end{figure}
 \newpage
-Una volta selezionate le direzioni preferite e premuto l'apposito pulsante verranno visualizzate tutte le fermate inerenti a quelle direzioni e tutti gli autobus in circolazione presso quei tragitti, distinti tramite l'uso di marcatori di colore e forma differente.
+Una volta selezionate le direzioni preferite e premuto l'apposito pulsante verranno visualizzate tutte le fermate inerenti a quelle direzioni e tutti gli autobus in circolazione presso quei tragitti, distinti tramite l'uso di marcatori di colore e forma differente. Nella figura \ref{fig:bus} vengono visualizzate le fermate delle direzioni Agricoltura, Termini e Trastevere, insieme ai rispettivi autobus in circolazione.
 
 Una semplice legenda aiuta l'utente a poter distinguere una direzione da un'altra:
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=13cm]{contents/images/bus}
+\includegraphics[width=12cm]{contents/images/bus}
 \end{center}
 \caption{Visualizzazione su mappa}
-\label{fig:fermata}
+\label{fig:bus}
 \end{figure}
 
 Col passare del tempo il servizio aggiornerà automaticamente la situazione degli autobus, aggiornando la mappa con le nuove posizioni:
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=13cm]{contents/images/bus2}
+\includegraphics[width=12cm]{contents/images/bus2}
 \end{center}
 \caption{Visualizzazione dopo un minuto}
-\label{fig:fermata}
+\label{fig:bus2}
 \end{figure}
 \newpage
 Concludendo, si mostra come lo sviluppo di un sistema con Responsive Design permetta una corretta visualizzazione su qualunque dispositivo e qualunque risoluzione. Stringendo il browser, infatti, il sito si adatterà ai nuovi parametri di altezza e lunghezza, riposizionaro i vari elementi in modo opportuno:
@@ -60,5 +60,5 @@ Concludendo, si mostra come lo sviluppo di un sistema con Responsive Design perm
 \includegraphics[height=15cm]{contents/images/responsive}
 \end{center}
 \caption{Visualizzazione con risoluzioni verticali}
-\label{fig:fermata}
+\label{fig:responsive}
 \end{figure}

@@ -65,7 +65,7 @@ Concependo come classi regolari questi quattro oggetti, si prosegue assegnando a
 \vspace{1cm}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics{contents/images/dcd1}
+\includegraphics[width=10cm]{contents/images/dcd1}
 \end{center}
 \caption{Primo diagramma delle classi}
 \label{fig:dcd}
@@ -104,8 +104,8 @@ La classe Applicazione, dovendo mantenere dei riferimenti verso le altre classi,
 
 La classe Controller dipone di un riferimento verso l'Applicazione, potendo così attingere alle classi di dati e poterle manipolare. Essa dispone dei metodi CaricaLinee(), CaricaDirezioni(linee), CaricaFermate(direzioni) e CaricaAutobus(direzioni), i quali inoltrano una richiesta al server per ottenere i dati di interesse da immagazzinare in modo temporaneo nel client.
 
-La classe Vista sarà dotata di riferimenti verso le classi di dati Linea, Direzione, Fermata e Autobus, ed è costituita da un metodo Render(). Questo metodo permette la visualizzazione dei dati prelevati dal server ed immagazinati nel client, dove ognuno disporrà di uno stile di visualizzazione adatto.
-
+\newpage
+La classe Vista sarà dotata di riferimenti verso le classi di dati Linea, Direzione, Fermata e Autobus, ed è costituita da un metodo Render(). Questo metodo permette la visualizzazione dei dati prelevati dal server ed immagazinati nel client, dove ognuno disporrà di uno stile di visualizzazione adatto.\\
 
 Attraverso quest'ultima iterazione del diagramma delle classi, si è definito un sistema esaustivo per la creazione di una web application, nei capitoli successivi si descriveranno le scelte progettuali dei framework per lo sviluppo dello struttura lato client e le scelte per la realizzazione dell'interfaccia grafica.
 

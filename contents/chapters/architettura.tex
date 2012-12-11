@@ -1,24 +1,20 @@
 In questo capitolo viene introdotta una panoramica sulla struttuazione dell’architettura del servizio affinché possano essere soddisfatte le esigenze illustrate nel capitolo precedente.
 
-Problematiche di questo tipo vengono risolte tramite lo sviluppo di un’applicazione web, o webApp cioè un'applicazione accessibile via web per mezzo di un network (es. una Intranet o la Rete Internet). Trattasi di un modello applicativo di elevata comodità, in quanto permette ad ogni utente di effettuare una consultazione interattiva delle informazioni di cui necessita.
+Problematiche di questo tipo vengono risolte tramite lo sviluppo di un’applicazione web, o webApp, cioè un'applicazione accessibile via web per mezzo di un network (es. una Intranet o la Rete Internet). Si tratta quindi di un modello applicativo di elevata comodità, in quanto permette ad ogni utente di effettuare una consultazione interattiva delle informazioni di cui necessita.
 
-Una webApp è strutturata su tre livelli: il primo livello è associabile al terminale di fruizione, il web browser; il secondo livello è costituito dal motore applicativo (core applicativo)  formato da codice sorgente in un qualche linguaggio di sviluppo dinamico lato-server (in questo caso Java); il terzo livello è riconducibile alla conservazione ed estrapolazione dei dati di interesse, cosicché possano essere riutilizzati in qualsiasi momento.
+Una webApp è strutturata su tre livelli: il primo livello è associabile al terminale di fruizione, il web browser; il secondo livello è costituito dal motore applicativo (core applicativo) formato da codice sorgente in un qualche linguaggio di sviluppo dinamico lato-server (in questo caso Java); il terzo livello è riconducibile alla conservazione ed estrapolazione dei dati di interesse, cosicché possano essere riutilizzati in qualsiasi momento.
 
 Una volta noto il funzionamento delle applicazioni web, per lo sviluppo di questo servizio si è scelto di utilizzare, come di consuetudine tra gli sviluppatori web, lo schema architetturale MVC.
 
-Infine le risorse vengono definite e indirizzate tramite il REpresentational State Transfer (REST) cioè un tipo di architettura software per i sistemi di ipertesto distribuiti
+Infine le risorse vengono definite e indirizzate tramite il REpresentational State Transfer (REST) cioè un tipo di architettura software per i sistemi di ipertesto distribuiti.
 
  \section{La Struttura Server-Client} % (fold)
 \label{sec:la_struttura_server_client}
 
-% section la_struttura_server_client (end)
-
-% section section_name (end)
-
 Per la realizzazione di una webApp è necessaria un’architettura Server-Client, formata cioè da due parti ben distinte che comunicano attraverso un linguaggio ad esse comune.
 
-Per far si che l’applicazione sia semplice da utilizzare ed accessibile alla maggior parte dell’utenza, è necessario che il progetto relativo al lato Client sia ben strutturato affinché sia facile la ricerca delle informazioni da parte dell’utente. E gestisca in maniera efficiente la mole di dati inviati dal Server.
-
+Per far sì che l’applicazione sia semplice da utilizzare ed accessibile alla maggior parte dell’utenza, è necessario che il progetto relativo al lato Client sia ben strutturato affinché sia facilitata la ricerca delle informazioni da parte dell’utente e gestita in maniera efficiente la mole di dati inviati dal Server.
+%ARRIVATO FINO A QUI
 Il Client, per sua natura, non compie operazioni complesse ma si limita a richiedere i dati di cui necessita, al server, per fornirne la visualizzazione. 
 
 Il Server è l’entità complessa che gestisce tutta la mole di dati che servono affinché l’applicazione funzioni. Esso ha il compito di: ricevere le richieste del client, prelevare i dati da un gestore esterno o da un’altra fonte, trattarli opportunamente secondo la richiesta ricevuta e restituirli nella forma richiesta.

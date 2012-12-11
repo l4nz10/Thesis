@@ -1,8 +1,8 @@
 Di seguito la descrizione delle interfacce API fornite dal server:
 
 \begin{description}
-	\item[Resource] \textbf{GET $\backslash$lines} fornisce la lista delle linee a disposizione di cui é possibile eseguire il monitoraggio, non é necessario specificare alcun parametro in questo caso in quanto non vi é alcuna possibilità di filtrare le linee richieste
-	\item[Response] la risposta sarà restituita dal server in formato json e rappresenterà una lista di oggetti linee, di seguito un esempio della rappresentazione.
+	\item[Risorsa] \textbf{GET /lines} fornisce la lista delle linee a disposizione di cui é possibile eseguire il monitoraggio, non é necessario specificare alcun parametro in questo caso in quanto non vi é alcuna possibilità di filtrare le linee richieste
+	\item[Risposta] la risposta sarà restituita dal server in formato JSON e rappresenterà una lista di oggetti linee, di seguito un esempio della rappresentazione.
 
 	\begin{verbatim}
 [
@@ -16,62 +16,82 @@ Di seguito la descrizione delle interfacce API fornite dal server:
     "number": "23"
   }
 ]
+
 	\end{verbatim}
 \end{description}
 
 \begin{description}
-	\item[Resource] \textbf{GET $\backslash$lines} fornisce la lista delle linee a disposizione di cui é possibile eseguire il monitoraggio, non é necessario specificare alcun parametro in questo caso in quanto non vi é alcuna possibilità di filtrare le linee richieste
-	\item[Response] la risposta sarà restituita dal server in formato json e rappresenterà una lista di oggetti linee, di seguito un esempio della rappresentazione.
+	\item[Risorsa] \textbf{GET /directions} fornisce la lista delle direzioni inerenti alle linee selezionate.
+  \item[Parametro] \textbf{lines=<linenumber1>-<linenumber2>-...-<linenumber\#>} è il parametro contenente i codici di linea che viene comunicato al server
+  tramite query string.
+	\item[Risposta] la risposta sarà restituita dal server in formato JSON e rappresenterà una lista di oggetti direzione, di seguito un esempio della rappresentazione.
 
 	\begin{verbatim}
 [
   {
-    "number": "170"
+    "id": "1700",
+    "name": "170 Direzione Termini (MA-MB-FS)"
   },
   {
-    "number": "766"
+    "id": "1701",
+    "name": "170 Direzione Agricoltura"
   },
-  {
-    "number": "23"
+  ...
+  { 
+    "id": "7660",
+    "name": "766 Direz. Millevoi"
   }
 ]
 	\end{verbatim}
 \end{description}
 
+\newpage
 \begin{description}
-	\item[Resource] \textbf{GET $\backslash$lines} fornisce la lista delle linee a disposizione di cui é possibile eseguire il monitoraggio, non é necessario specificare alcun parametro in questo caso in quanto non vi é alcuna possibilità di filtrare le linee richieste
-	\item[Response] la risposta sarà restituita dal server in formato json e rappresenterà una lista di oggetti linee, di seguito un esempio della rappresentazione.
+	\item[Risorsa] \textbf{GET /stations} fornisce la lista delle fermate disponibili nella direzione selezionata.
+  \item[Parametro] \textbf{directions=<directionID1>-<directionID2>-...-<directionID\#>} è il parametro contenente gli identificatori di direzione che viene comunicato al server tramite query string.
+	\item[Risposta] la risposta sarà restituita dal server in formato JSON e rappresenterà una lista di oggetti fermate, di seguito un esempio della rappresentazione.
 
 	\begin{verbatim}
 [
   {
-    "number": "170"
+    "id":"17000",
+    "name":"Termini (MA-MB-FS)",
+    "iconId":"1",
+    "lat":41.901718,
+    "lng":12.50009,
+    "type":"start"
   },
   {
-    "number": "766"
+    "id":"17001",
+    "name":"Repubblica (MA)",
+    "iconId":"1",
+    "lat":41.902557,
+    "lng":12.497091,
+    "type":"station"
   },
-  {
-    "number": "23"
-  }
-]
+  ...
+}
 	\end{verbatim}
 \end{description}
 
+\newpage
 \begin{description}
-	\item[Resource] \textbf{GET $\backslash$lines} fornisce la lista delle linee a disposizione di cui é possibile eseguire il monitoraggio, non é necessario specificare alcun parametro in questo caso in quanto non vi é alcuna possibilità di filtrare le linee richieste
-	\item[Response] la risposta sarà restituita dal server in formato json e rappresenterà una lista di oggetti linee, di seguito un esempio della rappresentazione.
+
+	\item[Risorsa] \textbf{GET /busses} fornisce la lista degli autobus disponibili sulla direzione selezionata.
+  \item[Parametro] \textbf{directions=<directionID1>-<directionID2>-...-<directionID\#>} è il parametro contenente gli identificatori di direzione che viene comunicato al server tramite query string.
+	\item[Risposta] la risposta sarà restituita dal server in formato JSON e rappresenterà una lista di oggetti autobus, di seguito un esempio della rappresentazione.
 
 	\begin{verbatim}
 [
   {
-    "number": "170"
+  "id":"71400",
+  "name":"Autobus in: Colombo/Marconi",
+  "iconId":1,
+  "lat":41.832781,
+  "lng":12.470668,
+  "type":"bus"
   },
-  {
-    "number": "766"
-  },
-  {
-    "number": "23"
-  }
+  ...
 ]
 	\end{verbatim}
 \end{description}
